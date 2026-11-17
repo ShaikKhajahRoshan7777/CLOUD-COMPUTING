@@ -1,0 +1,8 @@
+# Benchmark image used by the docker / gVisor / Kata back-ends (identical in every runtime).
+#   docker build -t educloud-bench:latest -f docker/Dockerfile.bench .
+FROM ubuntu:24.04
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        sysbench fio iperf3 stress-ng sysstat procps ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /data
+CMD ["sleep", "infinity"]
