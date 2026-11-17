@@ -1,0 +1,23 @@
+--- 1. Authentication ---
+asha  + correct password : token issued
+asha  + wrong password   : denied
+hacker (unknown user)    : denied
+stored hash (never plain): 583a4ffd39c79d9afd132ea178236e93...
+
+--- 2. Authorization (authenticated but limited) ---
+asha/editor  -> read   : 200 OK - 'asha' (editor) performed read
+asha/editor  -> write  : 200 OK - 'asha' (editor) performed write
+asha/editor  -> delete : 403 FORBIDDEN - 'asha' (editor) cannot delete
+ravi/viewer  -> read   : 200 OK - 'ravi' (viewer) performed read
+ravi/viewer  -> write  : 403 FORBIDDEN - 'ravi' (viewer) cannot write
+ravi/viewer  -> delete : 403 FORBIDDEN - 'ravi' (viewer) cannot delete
+
+--- 3. Attack simulations ---
+forged signature          : 401 UNAUTHENTICATED - signature mismatch (token tampered)
+role changed to admin     : 401 UNAUTHENTICATED - signature mismatch (token tampered)
+garbage token             : 401 UNAUTHENTICATED - malformed token
+expired token (after 2s)  : 401 UNAUTHENTICATED - token expired
+
+--- 4. Secure vs insecure comparison ---
+INSECURE: plain-text password, no expiry, no role check  -> any leaked credential = full access
+SECURE  : salted hash + signed expiring token + RBAC     -> leak is limited in time and in scope

@@ -1,0 +1,24 @@
+
+================================================================
+SCENARIO 1 - Student submits from a LAPTOP BROWSER, faculty reviews from MOBILE APP
+================================================================
+[browser ] login ........: token issued
+[browser ] upload check .: 200 OK - 'asha' (editor) performed write
+[mobile  ] faculty opens : Draft answer for Q1-Q3
+[system  ] version history: ['v1 by asha', 'v2 by asha']
+
+================================================================
+SCENARIO 2 - Wrong permission and simultaneous edit
+================================================================
+viewer tries to edit    : BLOCKED -> ravi (viewer) lacks 'edit' permission
+outsider tries to read  : BLOCKED -> stranger is not a member of 'CSA15-Assignment-Portal'
+stale edit (conflict)   : BLOCKED -> admin edited v1 but latest is v2 - merge needed
+
+================================================================
+AUDIT LOG (accountability evidence)
+================================================================
+[07:28:35] admin    share     asha -> editor
+[07:28:35] admin    share     ravi -> viewer
+[07:28:35] asha     create    Assignment3.docx v1
+[07:28:35] admin    comment   Assignment3.docx
+[07:28:35] asha     edit      Assignment3.docx v2

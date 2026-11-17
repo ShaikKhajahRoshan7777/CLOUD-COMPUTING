@@ -1,0 +1,13 @@
+ID  Test case                             Expected  Observed  Result
+----------------------------------------------------------------------
+TC1 Valid login, write via token          200       200       PASS
+TC2 Viewer token tries to delete          403       403       PASS
+TC3 Request without valid token           401       401       PASS
+TC4 Editor edits shared file              ALLOWED   ALLOWED   PASS
+TC5 Viewer (guest) reads file             ALLOWED   ALLOWED   PASS
+TC6 Viewer (guest) edits file             DENIED    DENIED    PASS
+TC7 Two editors, stale version            CONFLICT  CONFLICT  PASS
+TC8 Non-member reads file                 DENIED    DENIED    PASS
+TC9 Editor tries to share workspace       DENIED    DENIED    PASS
+----------------------------------------------------------------------
+SUMMARY: 9/9 test cases passed
