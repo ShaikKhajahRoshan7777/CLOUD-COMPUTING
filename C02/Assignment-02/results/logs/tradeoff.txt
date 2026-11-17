@@ -1,0 +1,24 @@
+TASK 6  decision table: 400 instances, typical load, 16 hosts, SIS needs isolation I >= 0.75 and a hardware boundary
+approach SMT off  dedicated   n/h hosts    risk      I       J  feasible
+KVM      False    False        33    13   0.370  0.630   1.553  no
+KVM      False    True         33    15   0.216  0.783   1.371  YES
+KVM      True     False        26    16   0.338  0.661   1.677  no
+KVM      True     True         26    19   0.216  0.783   1.621  no
+Docker   False    False        34    12   0.555  0.445   1.860  no
+Docker   False    True         34    14   0.223  0.777   1.321  no
+Docker   True     False        27    15   0.515  0.485   1.968  no
+Docker   True     True         27    18   0.223  0.777   1.571  no
+gVisor   False    False         0   inf   0.389  0.611   6.965  no
+gVisor   False    True          0   inf   0.200  0.800   7.525  no
+gVisor   True     False         0   inf   0.357  0.643   6.902  no
+gVisor   True     True          0   inf   0.200  0.800   7.525  no
+
+OPTIMUM -> KVM, SMT off=False, dedicated pool=True : 15 hosts, risk 0.216, J=1.371
+
+TASK 7  mitigation cost from the model (KVM, typical load)
+  M1 Disable SMT                             density 34 -> 27  (-21%)  risk 0.613 -> 0.572
+  M2 Dedicated hosts (SIS pool)              density 34 -> 34  (+0%)  risk 0.613 -> 0.442
+  M3 Image signing + registry                density 34 -> 34  (+0%)  risk 0.613 -> 0.557
+  M4 Micro-segmentation (OVS)                density 34 -> 34  (+0%)  risk 0.613 -> 0.562
+  M5 Encrypted live migration                density 34 -> 34  (+0%)  risk 0.613 -> 0.557
+  M6 KPTI + retpoline + patch automation     density 34 -> 33  (-3%)  risk 0.613 -> 0.530

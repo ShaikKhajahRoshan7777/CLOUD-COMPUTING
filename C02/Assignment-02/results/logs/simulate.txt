@@ -1,0 +1,28 @@
+bare-metal reference (1 instance, 4 vCPU, 95% busy): 3.791 core-s/s
+CPU/latency done: Bare-metal
+CPU/latency done: KVM
+CPU/latency done: Docker
+CPU/latency done: gVisor
+disk / network / memory tests done
+noisy-neighbour experiment done
+mitigation experiment done
+
+======================================================================================
+SUMMARY  (mean +/- SD over 10 repetitions; emulated 16-pCPU host)
+======================================================================================
+approach      n | CPU rel.       steal %    ctx/s     | p95 latency ms    | model
+Bare-metal    1 | 1.000 +/- 0.002     0.0          0 |    10.5 +/- 1.0    | 1.000
+Bare-metal    4 | 0.995 +/- 0.001     0.0          0 |    10.3 +/- 1.0    | 1.000
+Bare-metal   16 | 0.260 +/- 0.000    73.7      15198 |    37.4 +/- 7.4    | 0.263
+KVM           1 | 0.977 +/- 0.002     0.0          0 |    10.3 +/- 0.7    | 0.979
+KVM           4 | 0.970 +/- 0.001     0.0          0 |    11.1 +/- 0.9    | 0.978
+KVM          16 | 0.252 +/- 0.000    73.7      15198 |    40.7 +/- 10.6   | 0.257
+Docker        1 | 0.994 +/- 0.002     0.0          0 |    10.5 +/- 0.8    | 0.995
+Docker        4 | 0.985 +/- 0.001     0.0          0 |    10.7 +/- 1.3    | 0.993
+Docker       16 | 0.251 +/- 0.000    73.7      15198 |    53.2 +/- 14.1   | 0.259
+gVisor        1 | 0.973 +/- 0.002     0.0          0 |    17.4 +/- 0.9    | 0.975
+gVisor        4 | 0.966 +/- 0.001     0.0          0 |    17.6 +/- 2.4    | 0.974
+gVisor       16 | 0.251 +/- 0.000    73.7      15198 |   399.4 +/- 135.9  | 0.255
+
+Noisy neighbour (n=16): KVM x1.49, Docker x2.97, gVisor x2.05
+saved results/experiments.json

@@ -1,0 +1,6 @@
+# Benchmark image used identically for Docker (runc) and gVisor (runsc)
+FROM ubuntu:24.04
+RUN apt-get update && apt-get install -y --no-install-recommends sysbench fio iperf3 stress-ng procps && rm -rf /var/lib/apt/lists/*
+WORKDIR /bench
+COPY scripts/bench_inside.sh /bench/bench_inside.sh
+ENTRYPOINT ["/bin/bash", "/bench/bench_inside.sh"]

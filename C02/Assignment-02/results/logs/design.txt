@@ -1,0 +1,50 @@
+{
+ "orig_peak_density": {
+  "r_max": 1.3890370370370368,
+  "n_cpu": 22,
+  "n_mem": 59,
+  "n_io": 142,
+  "n": 22,
+  "limit": "CPU"
+ },
+ "orig_hosts_needed_400": 19,
+ "orig_risk": 0.37049999999999994,
+ "orig_risk_external": 0.37049999999999994,
+ "bigdata_vm_vnic": {
+  "r_max": 0.0,
+  "n_cpu": 0,
+  "n_mem": 59,
+  "n_io": 12,
+  "n": 0,
+  "limit": "CPU"
+ },
+ "pool_S": {
+  "n": 22,
+  "hosts": 7,
+  "risk": 0.2165,
+  "limit": "CPU"
+ },
+ "pool_E": {
+  "n": 17,
+  "hosts": 6,
+  "n_cpu": 17,
+  "n_io_vnic": 12,
+  "n_io_sriov": 24,
+  "risk": 0.2165
+ },
+ "pool_D": {
+  "n": 33,
+  "hosts": 8,
+  "risk": 0.37049999999999994
+ },
+ "total_hosts": 21,
+ "available": 16,
+ "deficit": 5,
+ "offpeak": {
+  "S": 3,
+  "D": 5,
+  "E": 6,
+  "total": 14
+ },
+ "peak_policy_hosts": 15
+}

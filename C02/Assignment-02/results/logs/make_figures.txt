@@ -1,0 +1,1 @@
+figures written: ['arch_A_kvm.png', 'arch_B_docker.png', 'arch_C_gvisor.png', 'arch_final_pools.png', 'graph1_cpu.png', 'graph2_latency.png', 'graph3_io.png', 'graph4_noisy.png', 'graph5_density.png', 'graph6_model_vs_exp.png', 'graph7_tradeoff.png', 'graph8_mitigation.png', 'graph9_real_bench.png']

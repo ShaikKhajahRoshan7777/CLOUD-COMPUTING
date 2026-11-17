@@ -1,0 +1,26 @@
+EDUCLOUD ANALYTICAL MODEL  (host: 64 cores, 512 GB RAM, 4 vCPU/instance)
+------------------------------------------------------------------------------
+[CPU] per-instance effective capacity (core-equivalents) - typical load, u=0.50, n=25 instances
+ratio   KVM         Docker      gVisor      
+1:1     3.867       3.910       2.941       
+2:1     3.867       3.910       2.941       
+4:1     1.933       1.955       1.471       
+8:1     0.967       0.978       0.735       
+o (%)   3.33        2.24        26.47       
+------------------------------------------------------------------------------
+[MEMORY] max instances/host before ballooning / swapping (and with page sharing)
+  KVM      N_mem = floor((512-16)/(8+0.30)) = 59   with KSM = 69
+  Docker   N_mem = floor((512-16)/(8+0.05)) = 61   with KSM = 64
+  gVisor   N_mem = floor((512-16)/(8+0.15)) = 60   with KSM = 67
+------------------------------------------------------------------------------
+[NETWORK / DISK] aggregate caps
+  KVM      bulk 1500B:  24.4 Gbit/s | web 256B:  16.6 Gbit/s | disk: 1000000 IOPS | per-VM share n=8: 2.96 Gbit/s
+  Docker   bulk 1500B:  24.4 Gbit/s | web 256B:  18.2 Gbit/s | disk: 1000000 IOPS | per-VM share n=8: 2.88 Gbit/s
+  gVisor   bulk 1500B:  16.0 Gbit/s | web 256B:   2.7 Gbit/s | disk:  400000 IOPS | per-VM share n=8: 1.92 Gbit/s
+------------------------------------------------------------------------------
+[DENSITY] instances per host meeting <=10% degradation
+scenario                  KVM                   Docker                gVisor                
+Best case                 59 (r<=4.28, memory)  61 (r<=4.24, memory)  27 (r<=4.06, network) 
+Typical (registration web 34 (r<=2.14, CPU)     34 (r<=2.16, CPU)     0 (r<=0.00, CPU)      
+Registration peak (3x nor 22 (r<=1.43, CPU)     23 (r<=1.45, CPU)     0 (r<=0.00, CPU)      
+Worst case (I/O storm)    18 (r<=1.13, CPU)     19 (r<=1.20, CPU)     0 (r<=0.00, CPU)      

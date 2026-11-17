@@ -1,0 +1,21 @@
+<!-- Approach A - KVM/QEMU guest (libvirt).  virsh define configs/educloud-vm.xml -->
+<domain type='kvm'>
+  <name>educloud-bench-01</name>
+  <memory unit='GiB'>8</memory>
+  <vcpu placement='static'>4</vcpu>
+  <cpu mode='host-passthrough'/>
+  <os><type arch='x86_64' machine='q35'>hvm</type></os>
+  <devices>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='none' io='native'/>
+      <source file='/var/lib/libvirt/images/ubuntu-24.04-bench.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <interface type='network'>
+      <source network='default'/>
+      <model type='virtio'/>
+      <driver name='vhost' queues='4'/>
+    </interface>
+    <memballoon model='virtio'/>
+  </devices>
+</domain>

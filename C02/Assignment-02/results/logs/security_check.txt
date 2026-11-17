@@ -1,0 +1,57 @@
+========================================================================
+EduCloud isolation & mitigation validation
+========================================================================
+1) KERNEL SHARING  (containers share the host kernel, VMs do not)
+   kernel release : 6.18.44-fc-v553
+   machine        : x86_64
+   hypervisor flag: PRESENT (this system is itself a guest/VM)
+
+2) NAMESPACE ISOLATION  (/proc/self/ns)
+   cgroup   -> cgroup:[4026531835]
+   ipc      -> ipc:[4026531839]
+   mnt      -> mnt:[4026531832]
+   net      -> net:[4026531833]
+   pid      -> pid:[4026531836]
+   pid_for_children -> pid:[4026531836]
+   time     -> time:[4026531834]
+   time_for_children -> time:[4026531834]
+   user     -> user:[4026531837]
+   uts      -> uts:[4026531838]
+
+3) CGROUP RESOURCE LIMITS
+   membership     : 9:name=systemd:/
+   /sys/fs/cgroup/cpu.max    : n/a
+   /sys/fs/cgroup/memory.max : n/a
+   /sys/fs/cgroup/pids.max   : n/a
+
+4) PROCESS CONFINEMENT
+   Uid: 0 0 0 0
+   CapEff: 000001fffeffffff
+   NoNewPrivs: 0
+   Seccomp: 0
+
+5) CPU VULNERABILITY MITIGATIONS (side-channel defences)
+   gather_data_sampling      : Not affected
+   ghostwrite                : Not affected
+   indirect_target_selection : Not affected
+   itlb_multihit             : Not affected
+   l1tf                      : Not affected
+   mds                       : Not affected
+   meltdown                  : Not affected
+   mmio_stale_data           : Not affected
+   old_microcode             : Not affected
+   reg_file_data_sampling    : Not affected
+   retbleed                  : Not affected
+   spec_rstack_overflow      : Not affected
+   spec_store_bypass         : Mitigation: Speculative Store Bypass disabled via prctl
+   spectre_v1                : Mitigation: usercopy/swapgs barriers and __user pointer sani
+   spectre_v2                : Mitigation: Enhanced / Automatic IBRS; IBPB: conditional; PB
+   srbds                     : Not affected
+   tsa                       : Not affected
+   tsx_async_abort           : Not affected
+   vmscape                   : Not affected
+   SMT active     : 0 (1 = SMT on, 0 = off)
+
+6) VERDICT
+   Kernel shared with other tenants on this host: YES for containers (one kernel); NO for VMs (one kernel per guest)
+   Isolation enforcers: namespaces + cgroups + seccomp (containers); VT-x/EPT + hypervisor (VMs); Sentry user-space kernel (gVisor)

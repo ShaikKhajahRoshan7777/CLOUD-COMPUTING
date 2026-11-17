@@ -1,0 +1,14 @@
+# Same resource allocation for every approach: 4 vCPU, 8 GB RAM per instance.
+# Scale with:  docker compose up --scale bench_runc=8     (n = 1, 2, 4, 8, 16)
+services:
+  bench_runc:                 # Approach B - OS-level container (shared kernel)
+    build: { context: .., dockerfile: configs/Dockerfile.bench }
+    runtime: runc
+    cpus: 4
+    mem_limit: 8g
+    security_opt: ["no-new-privileges:true"]
+  bench_runsc:                # Approach C - gVisor sandboxed container (user-space kernel)
+    build: { context: .., dockerfile: configs/Dockerfile.bench }
+    runtime: runsc
+    cpus: 4
+    mem_limit: 8g

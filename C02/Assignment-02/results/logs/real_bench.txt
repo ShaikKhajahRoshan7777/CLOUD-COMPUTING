@@ -1,0 +1,31 @@
+Host: Linux-6.18.44-fc-v553-x86_64-with-glibc2.39 | logical CPUs: 1 | Python 3.12.3
+
+== CPU test ==
+n= 1  throughput=    954.99 +/-  252.86   relative-to-n1=1.000  cpu-share=1.00  ctx-switches=18
+n= 2  throughput=    524.45 +/-   44.98   relative-to-n1=0.549  cpu-share=0.50  ctx-switches=129
+n= 4  throughput=    234.43 +/-   24.80   relative-to-n1=0.245  cpu-share=0.25  ctx-switches=67
+n= 8  throughput=    127.84 +/-   11.84   relative-to-n1=0.134  cpu-share=0.13  ctx-switches=35
+n=16  throughput=     69.50 +/-   12.03   relative-to-n1=0.073  cpu-share=0.07  ctx-switches=21
+
+== MEM test ==
+n= 1  throughput=     19.94 +/-    2.04   relative-to-n1=1.000
+n= 2  throughput=      5.88 +/-    0.26   relative-to-n1=0.295
+n= 4  throughput=      2.81 +/-    0.11   relative-to-n1=0.141
+n= 8  throughput=      1.42 +/-    0.21   relative-to-n1=0.071
+n=16  throughput=      0.60 +/-    0.09   relative-to-n1=0.030
+
+== DISK test ==
+n= 1  throughput=    440.14 +/-   59.70   relative-to-n1=1.000
+n= 2  throughput=    289.53 +/-   25.67   relative-to-n1=0.658
+n= 4  throughput=    162.56 +/-   18.12   relative-to-n1=0.369
+n= 8  throughput=     91.83 +/-    7.61   relative-to-n1=0.209
+n=16  throughput=     48.70 +/-    3.13   relative-to-n1=0.111
+
+== NET test ==
+n= 1  throughput=     18.95 +/-    0.60   relative-to-n1=1.000
+n= 2  throughput=     10.28 +/-    0.67   relative-to-n1=0.543
+n= 4  throughput=      5.78 +/-    0.27   relative-to-n1=0.305
+n= 8  throughput=      2.44 +/-    0.04   relative-to-n1=0.129
+n=16  throughput=      0.99 +/-    0.08   relative-to-n1=0.052
+
+saved results/real_bench.json
