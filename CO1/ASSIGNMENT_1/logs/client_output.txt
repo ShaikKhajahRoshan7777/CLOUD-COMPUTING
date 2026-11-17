@@ -1,0 +1,75 @@
+
+>>> GET /health
+<<< HTTP 200
+{
+  "service": "smart-campus-api",
+  "status": "UP",
+  "time": "2026-11-17T07:09:19+00:00"
+}
+
+>>> GET /api/v1/results/SIM2201001
+<<< HTTP 200
+{
+  "cgpa": 8.42,
+  "dept": "CSE",
+  "name": "Aarav Kumar",
+  "reg_no": "SIM2201001",
+  "results": {
+    "CSA11": "A+",
+    "CSA12": "B+",
+    "CSA15": "A"
+  },
+  "semester": 5
+}
+
+>>> GET /api/v1/results/SIM0000000
+<<< HTTP 404
+{
+  "error": "STUDENT_NOT_FOUND",
+  "message": "No student with register number SIM0000000"
+}
+
+>>> POST /api/v1/fees/payment   body={"reg_no": "SIM2201001", "amount": 5000, "mode": "UPI"}
+<<< HTTP 201
+{
+  "balance_due": 40000,
+  "mode": "UPI",
+  "paid": 5000,
+  "receipt_id": "RCPT-000001",
+  "reg_no": "SIM2201001",
+  "status": "SUCCESS"
+}
+
+>>> GET /api/v1/library/search?q=cloud
+<<< HTTP 200
+{
+  "books": [
+    {
+      "author": "Thomas Erl",
+      "available": true,
+      "id": 101,
+      "title": "Cloud Computing: Concepts, Technology and Architecture"
+    },
+    {
+      "author": "Hwang, Fox, Dongarra",
+      "available": true,
+      "id": 102,
+      "title": "Distributed and Cloud Computing"
+    },
+    {
+      "author": "Barrie Sosinsky",
+      "available": false,
+      "id": 103,
+      "title": "Cloud Computing Bible"
+    }
+  ],
+  "count": 3,
+  "query": "cloud"
+}
+
+>>> GET /api/v1/results/SIM2201001   headers={'X-Tenant-ID': 'AFF-017'}
+<<< HTTP 403
+{
+  "error": "TENANT_FORBIDDEN",
+  "message": "This tenant cannot access the requested record"
+}

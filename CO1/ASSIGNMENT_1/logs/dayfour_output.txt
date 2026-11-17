@@ -1,0 +1,26 @@
+==========================================================================
+ TASK 11 - DAY-4 CAPACITY, AVAILABILITY AND COST EVIDENCE
+==========================================================================
+
+ 1) CAPACITY (10x load)
+    Current peak   = 27,000 users x 10% x 0.2 req/s      = 540 req/s
+    10x peak       = 540 x 10                         = 5,400 req/s
+    Instances      = 5,400 / (120 x 0.7)          = 65 API containers at peak
+    With 1 zone lost: 33 per zone x 3 zones          = 99 containers provisioned at peak
+    Off-peak floor = 2 containers  -> autoscale between 2 and 99
+
+ 2) AVAILABILITY (target 99.9%)
+    Allowed downtime = 8760 h x (1 - 0.999) = 8.76 h/year = 43.8 min/month
+    Design                                     Component A  Downtime h/yr*  Effective A  Verdict
+    Original: 1 region, 2 zones, VM scale-out      99.938%           11.47      99.869%  FAIL
+    Revised-A: 1 region, 3 zones + gateway         99.890%           10.23      99.883%  FAIL
+    Revised-B: A + warm-standby 2nd region         99.994%            1.89      99.978%  PASS
+    * includes saturation downtime during peak events (12/yr: 30 min for VM scale-out, 3 min for container autoscale)
+    Series: A = A1 x A2 x ...   Parallel: 1-(1-A)^n   Two regions: U = U_r x (1 - 0.95 x A_r)
+
+ 3) COST UNDER 10x LOAD (Rs. lakh per year)
+    Original design scaled statically : compute  140.0 + other  37.0 =  177.0
+    Revised design with autoscaling   : compute   66.5 + other  71.0 =  137.5
+    Saving from redesign              :   39.5 lakh/yr (22%)
+    Chargeback from 40 colleges @ Rs 1 lakh = 40.0 lakh/yr -> net revised cost 97.5 lakh/yr
+    3-year revised cost (incl. 8.0 one-time migration, net of chargeback) = 300.5 lakh

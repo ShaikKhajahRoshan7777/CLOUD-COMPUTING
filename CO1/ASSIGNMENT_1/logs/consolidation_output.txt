@@ -1,0 +1,30 @@
+======================================================================
+ TASK 4 - SERVER CONSOLIDATION CALCULATION
+======================================================================
+ Legacy servers          : 12 (host capacity assumed equal to one legacy server)
+ Average / peak CPU use  : 15% / 95%
+ Target host utilisation : 70%
+ Hypervisor overhead     : 10%      Spare hosts (N+1): 1
+
+ A) BASIC CALCULATION
+    Total useful work = 12 x 15%            = 1.80 server-equivalents
+    Hosts needed      = 1.80 / 0.70         = 2.57  ->  3 hosts
+
+ B) REFINED CALCULATION (overhead + redundancy)
+    Work incl. overhead = 1.80 x 1.10       = 1.980
+    Hosts needed        = 1.980 / 0.70     = 2.83  ->  3 active hosts
+    Add N+1 spare       = 3 + 1               = 4 hosts in total
+    Utilisation of the 3 active hosts = 1.980 / 3 = 66%  (within the 70% target)
+
+ C) PEAK-LOAD CHECK (admissions / result / exam weeks)
+    Peak work           = 12 x 95% x 1.10   = 12.54
+    Hosts needed        = 12.54 / 0.70     = 17.91  ->  18 hosts
+    Burst capacity      = 18 - 3              = 15 hosts, rented only for the peak weeks
+
+ D) SENSITIVITY: if each new host is 3x a legacy server
+    Hosts = 2.83 / 3 = 0.94 -> 1 host(s) + 1 spare = 2 (host utilisation stays ~66%)
+
+ ------------------------------------------------------------------
+ RESULT: 12 physical servers  ->  4 virtualised hosts (3 active + 1 spare)
+         = 67% fewer machines; utilisation 15% -> 66%
+         Peak weeks need 15 extra hosts -> use cloud elasticity, not owned hardware.

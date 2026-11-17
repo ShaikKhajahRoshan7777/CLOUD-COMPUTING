@@ -1,0 +1,58 @@
+==============================================================================
+ TASK 10 - THREE-YEAR COST COMPARISON (Rs. lakh)
+==============================================================================
+
+ On-premise (refresh)
+    Servers (12 x 4.0)                     CapEx  48.0   OpEx/yr   0.0
+    Storage + network                      CapEx  12.0   OpEx/yr   0.0
+    DR site build                          CapEx  20.0   OpEx/yr   0.0
+    Power, cooling, facility               CapEx   0.0   OpEx/yr  13.0
+    Admin staff (3 x 6)                    CapEx   0.0   OpEx/yr  18.0
+    AMC / support (10% of hardware)        CapEx   0.0   OpEx/yr   8.0
+    Software licences                      CapEx   0.0   OpEx/yr  12.0
+    --------------------------------------------------------------
+    CapEx 80.0 + OpEx 51.0 x 3 = 233.0 lakh
+
+ IaaS-based
+    Migration (lift & shift)               CapEx  10.0   OpEx/yr   0.0
+    Reserved VMs (baseline)                CapEx   0.0   OpEx/yr  16.0
+    On-demand burst VMs                    CapEx   0.0   OpEx/yr   4.0
+    Storage + backup                       CapEx   0.0   OpEx/yr   5.0
+    Network / egress                       CapEx   0.0   OpEx/yr   3.0
+    DR (pilot light)                       CapEx   0.0   OpEx/yr   4.0
+    Software licences                      CapEx   0.0   OpEx/yr  12.0
+    Admin staff (2 x 6)                    CapEx   0.0   OpEx/yr  12.0
+    --------------------------------------------------------------
+    CapEx 10.0 + OpEx 56.0 x 3 = 178.0 lakh
+
+ PaaS/SaaS-based (full)
+    Migration + SIS re-platform            CapEx  30.0   OpEx/yr   0.0
+    PaaS app platform                      CapEx   0.0   OpEx/yr  12.0
+    Managed database                       CapEx   0.0   OpEx/yr   7.0
+    Storage                                CapEx   0.0   OpEx/yr   3.0
+    Network                                CapEx   0.0   OpEx/yr   2.0
+    Managed DR                             CapEx   0.0   OpEx/yr   3.0
+    SaaS licences (LMS, Email, Library)    CapEx   0.0   OpEx/yr  14.0
+    Admin staff (1 x 6)                    CapEx   0.0   OpEx/yr   6.0
+    --------------------------------------------------------------
+    CapEx 30.0 + OpEx 47.0 x 3 = 171.0 lakh
+
+ Recommended hybrid
+    Migration (phased)                     CapEx  12.0   OpEx/yr   0.0
+    SIS on reserved IaaS VMs               CapEx   0.0   OpEx/yr   7.5
+    PaaS (Exam Portal + API)               CapEx   0.0   OpEx/yr   7.5
+    Managed database                       CapEx   0.0   OpEx/yr   5.0
+    Storage + backup                       CapEx   0.0   OpEx/yr   3.0
+    Network                                CapEx   0.0   OpEx/yr   2.0
+    DR (pilot light)                       CapEx   0.0   OpEx/yr   4.0
+    SaaS licences (LMS, Email, Library)    CapEx   0.0   OpEx/yr  14.0
+    Admin staff (1.5 x 6)                  CapEx   0.0   OpEx/yr   9.0
+    --------------------------------------------------------------
+    CapEx 12.0 + OpEx 52.0 x 3 = 168.0 lakh
+
+------------------------------------------------------------------------------
+ Option                     CapEx/one-time   OpEx / year   3-year TCO  Saving vs on-prem
+ On-premise (refresh)                 80.0          51.0        233.0               0.0%
+ IaaS-based                           10.0          56.0        178.0              23.6%
+ PaaS/SaaS-based (full)               30.0          47.0        171.0              26.6%
+ Recommended hybrid                   12.0          52.0        168.0              27.9%

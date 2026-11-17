@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "On-premise (refresh)": {
+      "capex": 80.0,
+      "opex_year": 51.0,
+      "year1": 131.0,
+      "year2": 182.0,
+      "total": 233.0
+    },
+    "IaaS-based": {
+      "capex": 10.0,
+      "opex_year": 56.0,
+      "year1": 66.0,
+      "year2": 122.0,
+      "total": 178.0
+    },
+    "PaaS/SaaS-based (full)": {
+      "capex": 30.0,
+      "opex_year": 47.0,
+      "year1": 77.0,
+      "year2": 124.0,
+      "total": 171.0
+    },
+    "Recommended hybrid": {
+      "capex": 12.0,
+      "opex_year": 52.0,
+      "year1": 64.0,
+      "year2": 116.0,
+      "total": 168.0
+    }
+  },
+  "options": {
+    "On-premise (refresh)": {
+      "Servers (12 x 4.0)": [
+        48.0,
+        0
+      ],
+      "Storage + network": [
+        12.0,
+        0
+      ],
+      "DR site build": [
+        20.0,
+        0
+      ],
+      "Power, cooling, facility": [
+        0,
+        13.0
+      ],
+      "Admin staff (3 x 6)": [
+        0,
+        18.0
+      ],
+      "AMC / support (10% of hardware)": [
+        0,
+        8.0
+      ],
+      "Software licences": [
+        0,
+        12.0
+      ]
+    },
+    "IaaS-based": {
+      "Migration (lift & shift)": [
+        10.0,
+        0
+      ],
+      "Reserved VMs (baseline)": [
+        0,
+        16.0
+      ],
+      "On-demand burst VMs": [
+        0,
+        4.0
+      ],
+      "Storage + backup": [
+        0,
+        5.0
+      ],
+      "Network / egress": [
+        0,
+        3.0
+      ],
+      "DR (pilot light)": [
+        0,
+        4.0
+      ],
+      "Software licences": [
+        0,
+        12.0
+      ],
+      "Admin staff (2 x 6)": [
+        0,
+        12.0
+      ]
+    },
+    "PaaS/SaaS-based (full)": {
+      "Migration + SIS re-platform": [
+        30.0,
+        0
+      ],
+      "PaaS app platform": [
+        0,
+        12.0
+      ],
+      "Managed database": [
+        0,
+        7.0
+      ],
+      "Storage": [
+        0,
+        3.0
+      ],
+      "Network": [
+        0,
+        2.0
+      ],
+      "Managed DR": [
+        0,
+        3.0
+      ],
+      "SaaS licences (LMS, Email, Library)": [
+        0,
+        14.0
+      ],
+      "Admin staff (1 x 6)": [
+        0,
+        6.0
+      ]
+    },
+    "Recommended hybrid": {
+      "Migration (phased)": [
+        12.0,
+        0
+      ],
+      "SIS on reserved IaaS VMs": [
+        0,
+        7.5
+      ],
+      "PaaS (Exam Portal + API)": [
+        0,
+        7.5
+      ],
+      "Managed database": [
+        0,
+        5.0
+      ],
+      "Storage + backup": [
+        0,
+        3.0
+      ],
+      "Network": [
+        0,
+        2.0
+      ],
+      "DR (pilot light)": [
+        0,
+        4.0
+      ],
+      "SaaS licences (LMS, Email, Library)": [
+        0,
+        14.0
+      ],
+      "Admin staff (1.5 x 6)": [
+        0,
+        9.0
+      ]
+    }
+  }
+}

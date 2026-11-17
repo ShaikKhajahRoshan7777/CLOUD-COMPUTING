@@ -1,0 +1,15 @@
+{
+  "avg_load": 1.7999999999999998,
+  "basic_hosts": 3,
+  "basic_raw": 2.57,
+  "avg_load_ov": 1.98,
+  "hosts_ov_raw": 2.83,
+  "active": 3,
+  "final_hosts": 4,
+  "util_active": 66.0,
+  "peak_load": 12.54,
+  "peak_raw": 17.91,
+  "peak_hosts": 18,
+  "burst": 15,
+  "modern_hosts": 1
+}

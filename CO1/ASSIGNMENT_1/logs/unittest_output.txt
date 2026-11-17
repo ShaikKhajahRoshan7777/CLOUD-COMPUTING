@@ -1,0 +1,16 @@
+test_fee_payment_exceeds_due_422 (tests.test_api.SmartCampusApiTests.test_fee_payment_exceeds_due_422) ... ok
+test_fee_payment_invalid_400 (tests.test_api.SmartCampusApiTests.test_fee_payment_invalid_400) ... ok
+test_fee_payment_success_201 (tests.test_api.SmartCampusApiTests.test_fee_payment_success_201) ... ok
+test_health_returns_200 (tests.test_api.SmartCampusApiTests.test_health_returns_200) ... ok
+test_library_search_200 (tests.test_api.SmartCampusApiTests.test_library_search_200) ... ok
+test_library_search_missing_query_400 (tests.test_api.SmartCampusApiTests.test_library_search_missing_query_400) ... ok
+test_result_lookup_failure_404 (tests.test_api.SmartCampusApiTests.test_result_lookup_failure_404) ... ok
+test_result_lookup_success_200 (tests.test_api.SmartCampusApiTests.test_result_lookup_success_200) ... ok
+test_tenant_isolation_403 (tests.test_api.SmartCampusApiTests.test_tenant_isolation_403)
+A college tenant must not read another tenant's student (Day-4 multi-tenancy). ... ok
+test_tenant_own_record_200 (tests.test_api.SmartCampusApiTests.test_tenant_own_record_200) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.013s
+
+OK
