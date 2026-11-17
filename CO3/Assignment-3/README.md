@@ -4,7 +4,6 @@
 
 Pair-work assignment covering cloud access, platforms, Web APIs, security, collaboration and a complete cloud-based design (**CloudCollab Hub**).
 
-📄 Full report: [`docs/CO3_Assignment3_Cloud_Computing_Report.docx`](docs/CO3_Assignment3_Cloud_Computing_Report.docx)
 
 ---
 
