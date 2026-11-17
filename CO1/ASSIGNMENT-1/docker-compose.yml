@@ -1,6 +1,0 @@
-services:
-  university-api:
-    build: .
-    container_name: university-api-container
-    ports:
-      - "5000:5000"
