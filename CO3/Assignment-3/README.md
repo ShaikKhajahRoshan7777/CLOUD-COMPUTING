@@ -84,12 +84,9 @@ All screenshots: [`screenshots/`](screenshots/)
 - The Q6 portal runs locally on port `5050` as a stand-in for a cloud server.
 - Demo credentials in the code are for learning only – never hard-code secrets in real projects.
 
-## 👥 Team
+## Student Details
 
-| Role | Name | Reg. No. |
-|---|---|---|
-| Student A | _Your name_ | _Reg. no._ |
-| Student B | _Your name_ | _Reg. no._ |
+| Name : Shaik Khajah Roshan | Reg. No. : 192511445 |
 
 ## 📜 License
 Submitted for academic evaluation. Add a license of your choice before sharing publicly.
