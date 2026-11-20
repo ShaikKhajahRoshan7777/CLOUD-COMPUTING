@@ -1,0 +1,41 @@
+==============================================================================
+ TASK 2.4 : DESK-CHECK  (1-min tumbling windows, event time)
+==============================================================================
+ E1 S1 R7 spd=  42 et=08:00:05 at=08:00:06
+     -> ACCEPTED
+     state: R7@08:00:00=[sum 42, n 1]
+ E2 S2 R7 spd=  38 et=08:00:20 at=08:00:21
+     -> ACCEPTED
+     state: R7@08:00:00=[sum 80, n 2]
+ E3 S1 R7 spd=  42 et=08:00:05 at=08:00:07
+     -> MERGED    duplicate of (sensor, event time) - state unchanged
+     state: R7@08:00:00=[sum 80, n 2]
+ E4 S3 R9 spd=None et=08:00:30 at=08:00:31
+     -> REJECTED  missing speed -> dead-letter
+     state: R7@08:00:00=[sum 80, n 2]
+ E5 S2 R7 spd=  -5 et=08:00:50 at=08:00:51
+     -> REJECTED  speed -5 outside 0-200 -> dead-letter
+     state: R7@08:00:00=[sum 80, n 2]
+ E6 S4 R9 spd=  55 et=08:01:10 at=08:01:12
+     -> ACCEPTED
+     state: R7@08:00:00=[sum 80, n 2]  R9@08:01:00=[sum 55, n 1]
+ E7 S1 R7 spd=  40 et=08:00:45 at=08:01:40
+     -> LATE-ACCEPTED  window closed, watermark lag 5s <= 60s -> correction re-emitted
+     state: R7@08:00:00=[sum 120, n 3]  R9@08:01:00=[sum 55, n 1]
+ E8 S5 R9 spd=  60 et=08:01:20 at=08:01:21
+     -> ACCEPTED
+     state: R7@08:00:00=[sum 120, n 3]  R9@08:01:00=[sum 115, n 2]
+------------------------------------------------------------------------------
+ Emitted results:
+   FINAL  R7@08:00:00 avg=40.0 n=2  (watermark 08:01:05)
+   CORRECTION R7@08:00:00 avg=40.0 n=3
+
+==============================================================================
+ TASK 2.5 : CHALLENGE - change E7 speed 40 -> 52
+==============================================================================
+ Prediction : (R7, 08:00) is corrected from 40.0 to 44.0; only E7's decision matters.
+ Observed   : (R7, 08:00) sum=132 n=3 avg=44.0
+ Prediction correct: True
+
+ Parameter test: allowed lateness 0 s instead of 60 s
+   E7 outcome -> (R7, 08:00) n=2 (E7 dropped to archive; live view stays at 2 events)

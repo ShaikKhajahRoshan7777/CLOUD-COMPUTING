@@ -1,0 +1,13 @@
+========================================================================
+ TASK 1 : SPECIFICATION COMPLETENESS CHECK  (HospitalAnalytics)
+========================================================================
+ Stage 1 SECURE INTAKE                fields=6/6  protection-rule=yes  [PASS]
+ Stage 2 VALIDATE AND QUARANTINE      fields=6/6  protection-rule=yes  [PASS]
+ Stage 3 DE-IDENTIFY AND SEPARATE     fields=6/6  protection-rule=yes  [PASS]
+ Stage 4 ANALYSE DISEASE TRENDS       fields=6/6  protection-rule=yes  [PASS]
+ Stage 5 CONTROLLED SHARING           fields=6/6  protection-rule=yes  [PASS]
+ Stage 6 AUDIT, FAILURE AND REPLAY    fields=6/6  protection-rule=yes  [PASS]
+------------------------------------------------------------------------
+ Stages specified          : 6
+ Defence word count        : 79  (limit 100)  [PASS]
+ Overall                   : ALL CHECKS PASSED

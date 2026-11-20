@@ -1,0 +1,30 @@
+==========================================================================
+ TASK 4.2 : LINKAGE ATTACK ON THE ORIGINAL RELEASE
+==========================================================================
+  Meena S    join on (PIN, DOB, Gender): 1 match  [RE-IDENTIFIED] -> record 1: Widow Pension, Rs 1200
+  Priya R    join on (PIN, DOB, Gender): 1 match  [RE-IDENTIFIED] -> record 2: Housing, Rs 8000
+  Anil K     join on (PIN, DOB, Gender): 1 match  [RE-IDENTIFIED] -> record 4: Housing, Rs 8000
+  Karthik V  join on (PIN, DOB, Gender): 1 match  [RE-IDENTIFIED] -> record 3: Scholarship, Rs 5000
+  Ravi T     join on (PIN, DOB, Gender): 0 match  [no match]
+  First identification: Meena S joins to exactly one row (record 1) at the PIN+DOB+Gender join.
+
+==========================================================================
+ TASK 4.3 : REPAIRED STEP 3 (generalise + k-anonymity check, k = 3)
+==========================================================================
+  group ('600', '1980s', 'F'): size 3  distinct schemes 3
+  group ('600', '1990s', 'M'): size 4  distinct schemes 3
+  every group >= 3: True   -> release permitted: True
+  Meena S    join on (PIN3, decade, Gender): 3 candidates  max re-id probability 0.33
+  Priya R    join on (PIN3, decade, Gender): 3 candidates  max re-id probability 0.33
+  Anil K     join on (PIN3, decade, Gender): 4 candidates  max re-id probability 0.25
+  Karthik V  join on (PIN3, decade, Gender): 4 candidates  max re-id probability 0.25
+  Ravi T     no match
+
+==========================================================================
+ TASK 4.4 : REGRESSION CHECK
+==========================================================================
+  Case 1 - Ravi T (not a beneficiary): original 0 matches, repaired 0 matches -> still safe
+  Case 2 - average Amount per Scheme (analysis query):
+     original: {'Farmer Aid': 3250.0, 'Housing': 8000.0, 'Scholarship': 5000.0, 'Widow Pension': 1200.0}
+     repaired: {'Farmer Aid': 3250.0, 'Housing': 8000.0, 'Scholarship': 5000.0, 'Widow Pension': 1200.0}
+  Identical -> usefulness preserved.

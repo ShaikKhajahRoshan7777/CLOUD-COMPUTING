@@ -1,0 +1,24 @@
+==========================================================================
+ TASK 5.1 : MAP -> COMBINE -> SHUFFLE -> REDUCE (sample)
+==========================================================================
+ Mapper 1: emitted 4 pairs -> after combiner 2 pairs {('R7', '08'): [120, 3], ('R9', '08'): [55, 1]}
+ Mapper 2: emitted 5 pairs -> after combiner 2 pairs {('R7', '08'): [60, 1], ('R9', '08'): [195, 4]}
+ Partition rule: reducer = index(segment) mod 2
+ Reducer 0: received [(('R7', '08'), (120, 3)), (('R7', '08'), (60, 1))]
+ Reducer 1: received [(('R9', '08'), (55, 1)), (('R9', '08'), (195, 4))]
+ Output (segment, hour) -> average: {('R7', '08'): 45.0, ('R9', '08'): 50.0}
+
+ Correct R9 average (sum/count)   = 50.00
+ Wrong 'average of averages'      = 51.88   <- why the combiner must carry (sum, count)
+
+==========================================================================
+ TASK 5.1/5.2 : DATA-MOVEMENT ESTIMATES (assumptions, not measurements)
+==========================================================================
+ Shuffle pairs without combiner : 4,320,000,000
+ Shuffle pairs with combiner    : 120,000   (24 mappers x 5000 segments)
+ Estimated reduction            : 36,000 x
+
+ Dataset ~ 172.8 GB/day.  20 iterations:
+   MapReduce  : reads 3,456.0 GB from disk + writes intermediate/output each pass
+   In-memory  : reads 172.8 GB once, then 19 passes from memory
+   Disk reads avoided: 3,283.2 GB (95 %)

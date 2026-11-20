@@ -1,0 +1,41 @@
+============================================================================
+ TASK 6 STAGE 5 : DESK-CHECK E1-E8
+============================================================================
+ E1 B101 AC9 D1 amt=2000  day=1
+     A: AC9 distinct in window = 1 -> ok   B: no earlier payment -> skip -> ok
+ E2 B102 AC9 D1 amt=2000  day=2
+     A: AC9 distinct in window = 2 -> ok   B: median 2000, limit 6000 -> ok
+ E3 B103 AC4 D2 amt=1500  day=2
+     A: AC4 distinct in window = 1 -> ok   B: no earlier payment -> skip -> ok
+ E4 B104 AC9 D1 amt=2000  day=3
+     A: AC9 distinct in window = 3 -> FLAG   B: median 2000, limit 6000 -> ok
+ E5 B105 AC7 D2 amt=9000  day=3
+     A: AC7 distinct in window = 1 -> ok   B: median 1500, limit 4500 -> FLAG
+ E6 B106 AC4 D2 amt=1500  day=5
+     A: AC4 distinct in window = 2 -> ok   B: median 5250, limit 15750 -> ok
+ E7 B107 AC9 D1 amt=2000  day=9
+     A: AC9 distinct in window = 2 -> ok   B: median 2000, limit 6000 -> ok
+ E8 B108 AC2 D1 amt=2100  day=9
+     A: AC2 distinct in window = 1 -> ok   B: median 2000, limit 6000 -> ok
+----------------------------------------------------------------------------
+ Flagged: {'E4': 'Rule A', 'E5': 'Rule B'}
+
+============================================================================
+ TASK 6 STAGE 6 : ATTACK SET X1-X7 (predicted: nothing flagged)
+============================================================================
+ X1 B301 AC21 D3 amt=1000  day=1
+     A: AC21 distinct in window = 1 -> ok   B: no earlier payment -> skip -> ok
+ X2 B302 AC21 D3 amt=1000  day=2
+     A: AC21 distinct in window = 2 -> ok   B: median 1000, limit 3000 -> ok
+ X3 B303 AC22 D3 amt=1000  day=3
+     A: AC22 distinct in window = 1 -> ok   B: median 1000, limit 3000 -> ok
+ X4 B304 AC22 D3 amt=1000  day=4
+     A: AC22 distinct in window = 2 -> ok   B: median 1000, limit 3000 -> ok
+ X5 B305 AC23 D3 amt=1000  day=5
+     A: AC23 distinct in window = 1 -> ok   B: median 1000, limit 3000 -> ok
+ X6 B306 AC23 D3 amt=2900  day=6
+     A: AC23 distinct in window = 2 -> ok   B: median 1000, limit 3000 -> ok
+ X7 B307 AC24 D3 amt=2950  day=6
+     A: AC24 distinct in window = 1 -> ok   B: median 1000, limit 3000 -> ok
+----------------------------------------------------------------------------
+ Flagged: NONE  -> both rules fail against split accounts and just-under-3x amounts
