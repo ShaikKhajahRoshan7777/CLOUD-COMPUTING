@@ -1,0 +1,134 @@
+{
+  "rules": {
+    "R1_FIELD_COUNT": 2126,
+    "R2_MISSING_VALUE": 4250,
+    "R3_TYPE_REPAIR_OR_REJECT": 4169,
+    "R4_RANGE": 2142,
+    "R5_DUPLICATE": 9879
+  },
+  "keep": 185973,
+  "repair": 1987,
+  "read": 210526,
+  "trace": [
+    [
+      13,
+      "REJECT",
+      "R4_RANGE",
+      "speed 260.0 outside [0,200]"
+    ],
+    [
+      34,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "timestamp '31/02/2026' unparsable"
+    ],
+    [
+      38,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "timestamp '31/02/2026' unparsable"
+    ],
+    [
+      44,
+      "REJECT",
+      "R2_MISSING_VALUE",
+      "empty speed"
+    ],
+    [
+      68,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "speed 'fast' is not numeric"
+    ],
+    [
+      70,
+      "REPAIR",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "unit suffix stripped from '55.1 km/h'"
+    ],
+    [
+      141,
+      "REJECT",
+      "R4_RANGE",
+      "speed 260.0 outside [0,200]"
+    ],
+    [
+      157,
+      "REJECT",
+      "R4_RANGE",
+      "speed 260.0 outside [0,200]"
+    ],
+    [
+      160,
+      "REJECT",
+      "R1_FIELD_COUNT",
+      "expected 4 fields, found 3"
+    ],
+    [
+      174,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "timestamp '31/02/2026' unparsable"
+    ],
+    [
+      187,
+      "REJECT",
+      "R1_FIELD_COUNT",
+      "expected 4 fields, found 3"
+    ],
+    [
+      196,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "timestamp '31/02/2026' unparsable"
+    ],
+    [
+      209,
+      "REJECT",
+      "R2_MISSING_VALUE",
+      "empty speed"
+    ],
+    [
+      216,
+      "REJECT",
+      "R3_TYPE_REPAIR_OR_REJECT",
+      "speed 'fast' is not numeric"
+    ]
+  ],
+  "dup": {
+    "pred": {
+      "kept": 187960,
+      "time_ratio": 1.583335708336896,
+      "shuffle_ratio": 1.583335708336896,
+      "reasoning": "kept = distinct valid keys, independent of duplicates; time and shuffle scale with delivered lines (200k/(1-0.40) vs 210526)"
+    },
+    "obs": {
+      "0.05": {
+        "lines": 210526,
+        "kept": 187960,
+        "dups": 9879,
+        "mean": 0.7655167826666798,
+        "sd": 0.08841570805501757,
+        "shuffle_records": 197839,
+        "shuffle_bytes": 6332122
+      },
+      "0.4": {
+        "lines": 333333,
+        "kept": 187960,
+        "dups": 125244,
+        "mean": 1.3737156946666762,
+        "sd": 0.07415400513823762,
+        "shuffle_records": 313204,
+        "shuffle_bytes": 10024538
+      }
+    }
+  },
+  "drift": {
+    "base_mean": 50.05503166783954,
+    "tolerant_mean": 13.908652000000002,
+    "strict_rejected": 50000,
+    "lines": 50000,
+    "ratio": 0.2782,
+    "converted_mean": 50.071147200000006
+  }
+}

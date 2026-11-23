@@ -1,0 +1,41 @@
+==============================================================================
+TASK 5 - CSV vs PARQUET vs SQLITE ON 5,000,000 EVENTS
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "cpu": "Intel(R) Xeon(R) Processor @ 2.30GHz", "cpu_cores": 1, "ram_gb": 3.9, "pandas": "3.0.6", "pyarrow": "26.0.1"} sqlite 3.45.1
+
+BUILDING the three stores from one generator (500 sensors x 30 days x 166,667 events/day = 5,000,000 rows)...
+build time: CSV 5.3s | Parquet 2.4s | SQLite insert 6.1s + index 3.0s
+rows: CSV/Parquet/SQLite = ?/5000010/5000010
+STORAGE SIZE: CSV 245.0 MB | Parquet 27.9 MB (60 row groups, zstd, sorted by date+sensor) | SQLite 429.0 MB (table + index on sensor_id,event_date)
+
+PREDICTIONS (saved before any query ran):
+  Q1 point lookup : CSV scans ~100%% of file; Parquet reads ~1%% (row-group pruning); SQLite ~1%% (index seek)
+  Q2 week scan    : CSV ~100%%; Parquet ~8%% (7/30 days, 2/5 columns); SQLite ~100%% (index is on sensor, not date)
+  Q1' (10 sensors): bytes x1 CSV, x2 Parquet, x3 SQLite  |  Q2' (one column): bytes x1 CSV, x0.6 Parquet, x1 SQLite
+page-cache drop before cold runs possible: True
+
+Q1 / Q2 (cold run reported separately; warm = mean +/- SD of 3 further runs)
+     store      cold s       warm s (n=3)   bytes read % of store    result
+Q1   CSV         3.282     2.933+/-0.107      244991053    100.0%       352
+Q1   Parquet     0.271     0.014+/-0.001         610696      2.2%       352
+Q1   SQLite      0.011     0.001+/-0.000        1421568      0.3%       352
+Q2   CSV         1.970     1.781+/-0.029      244991054    100.0%  100 segs
+Q2   Parquet     0.164     0.134+/-0.018        1594916      5.7%  100 segs
+Q2   SQLite      0.693     0.687+/-0.027      345247770     80.5%  100 segs
+Q1 row counts agree across stores: True {'CSV': 352, 'Parquet': 352, 'SQLite': 352}
+Q2 max |avg difference| vs Parquet: {'CSV': '3.4e-13', 'Parquet': '0.0e+00', 'SQLite': '3.4e-13'}
+
+TUNING: SQLite covering index (event_date, segment, speed): build 4.7s, DB 429.0 -> 601.5 MB ; Q2 now 0.295s warm, 82288668 bytes read (13.7% of DB)
+
+STRESS THE DESIGN - changed query patterns
+CSV      Q1': 2.794s (x0.95 time) bytes x1.00 (pred x1.0) rows 3352 | Q2': 1.410s (x0.79) bytes x1.00 (pred x1.0)
+Parquet  Q1': 0.015s (x1.03 time) bytes x1.00 (pred x2.0) rows 3352 | Q2': 0.041s (x0.31) bytes x1.00 (pred x0.6)
+SQLite   Q1': 0.152s (x155.69 time) bytes x393.82 (pred x3.0) rows 3352 | Q2': 0.062s (x0.09) bytes x0.12 (pred x1.0)
+
+Q3 WRITE LOAD: stream of 50 batches x 1,000 new events (3 repetitions each)
+  CSV      0.059 +/- 0.022 s per 50,000 events  ->    842381 events/s ; bytes written/run 2.50 MB ; units created per run: 1 file(s)
+  Parquet  0.060 +/- 0.005 s per 50,000 events  ->    838680 events/s ; bytes written/run 0.68 MB ; units created per run: 50 file(s)
+  SQLite   1.615 +/- 0.334 s per 50,000 events  ->     30967 events/s ; bytes written/run 721.47 MB ; units created per run: 50 transactions
+  Parquet small files after 3 runs: 150 (each immutable; reads must open all of them -> compaction needed)
+
+Saved results/task5_results.json and figures/fig_task5.png

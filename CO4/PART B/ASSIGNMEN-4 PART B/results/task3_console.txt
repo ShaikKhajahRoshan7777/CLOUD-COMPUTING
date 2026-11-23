@@ -1,0 +1,92 @@
+==============================================================================
+TASK 3 - SECURITY AND PRIVACY ENGINEERING UNDER ATTACK
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "cpu": "Intel(R) Xeon(R) Processor @ 2.30GHz", "cpu_cores": 1, "ram_gb": 3.9, "cryptography": "50.0.2"}
+
+DATASETS (synthetic): beneficiaries=5000 records, auxiliary=3000 records (60% of the same people)
+             Name   ID_Number PIN_Code Date_of_Birth Gender        Scheme  Amount
+  Aarav Murugan 0 BEN10000000   632001    1994-01-27      F  Farm Subsidy 3789.51
+ Divya Krishnan 1 BEN10000037   602101    1967-02-27      F   Scholarship 3094.64
+Karthik Murugan 2 BEN10000074   600017    1961-01-20      M Widow Pension 1058.91
+
+------------------------------------------------------------------------------
+STAGE A - ROLE-BASED ACCESS CONTROL + HASH-CHAINED AUDIT
+------------------------------------------------------------------------------
+
+[analyst_asha as fraud_analyst] SELECT * FROM v_analyst LIMIT 3
+  Name | ID_Number | PIN_Code | Date_of_Birth | Gender | Scheme | Amount
+  Aarav Murugan 0 | BEN10000000 | 632001 | 1994-01-27 | F | Farm Subsidy | 3789.51
+  Divya Krishnan 1 | BEN10000037 | 602101 | 1967-02-27 | F | Scholarship | 3094.64
+  Karthik Murugan 2 | BEN10000074 | 600017 | 1961-01-20 | M | Widow Pension | 1058.91
+  AUDIT -> seq=0 2026-11-18 14:12:45 user=analyst_asha role=fraud_analyst view=v_analyst rows=3 decision=ALLOWED hash=f7d0cb4c071ae80a...
+
+[researcher_ravi as researcher] SELECT * FROM v_researcher LIMIT 3
+  PIN_Code | Date_of_Birth | Gender | Scheme | Amount
+  632001 | 1994-01-27 | F | Farm Subsidy | 3789.51
+  602101 | 1967-02-27 | F | Scholarship | 3094.64
+  600017 | 1961-01-20 | M | Widow Pension | 1058.91
+  AUDIT -> seq=1 2026-11-18 14:12:45 user=researcher_ravi role=researcher view=v_researcher rows=3 decision=ALLOWED hash=01dd1019ff6216ad...
+
+[researcher_ravi] SELECT * FROM beneficiaries  ->  PermissionError: role 'researcher' may not read 'beneficiaries'
+  AUDIT -> seq=2 decision=DENIED hash=5d0ef037cd18fa32...
+
+Audit chain verification (3 entries): VALID
+
+------------------------------------------------------------------------------
+STAGE B - LINKAGE ATTACK ON THE ORIGINAL RELEASE RULE (drop Name and ID_Number)
+------------------------------------------------------------------------------
+PREDICTION (recorded before the attack):
+  cells = 25 PINs x 14,610 days x 2 genders = 730500 ; P(unique) = exp(-(N-1)/cells) = 0.9932
+  expected unique records = 4966 ; expected re-identified (60% in auxiliary) = 2980
+ATTACK RESULT:
+  released records unique on (PIN, DOB, Gender) : 4970  (predicted 4966)
+  records re-identified by joining the auxiliary: 2983  (predicted 2980, error +0.1%)
+  of which correct (verified with ground truth)  : 2983  (precision 100.0%)
+  EXAMPLE of exposed individuals (Name linked to Scheme and Amount):
+              Name PIN_Code Date_of_Birth Gender          Scheme  Amount
+   Aarav Murugan 0   632001    1994-01-27      F    Farm Subsidy 3789.51
+  Meena Krishnan 3   602105    1985-08-06      F Old-Age Pension 1386.99
+  Suresh Murugan 4   603002    1974-08-14      M     Scholarship 3160.54
+Lakshmi Krishnan 5   600028    1978-09-09      M     Scholarship 1941.26
+
+------------------------------------------------------------------------------
+STAGE C - GENERALISATION LATTICE, k-ANONYMITY AND UTILITY LOSS
+------------------------------------------------------------------------------
+k (minimum class size) before suppression;  rows = PIN digits kept, columns = DOB generalisation
+PIN\DOB   exact date    month         year          5-year band   10-year band  20-year band  
+6 digits  k=1 (100.0%)  k=1 (100.0%)  k=1 (76.3%)   k=2 (0.1%)    k=16          k=36          
+5 digits  k=1 (100.0%)  k=1 (99.9%)   k=1 (43.8%)   k=2 (0.0%)    k=16          k=36          
+4 digits  k=1 (100.0%)  k=1 (99.1%)   k=1 (19.0%)   k=6           k=16          k=40          
+3 digits  k=1 (100.0%)  k=1 (97.9%)   k=4 (0.2%)    k=46          k=115         k=234         
+0 digits  k=1 (99.9%)   k=1 (22.7%)   k=44          k=285         k=608         k=1218        
+(percentage = records in classes smaller than 5 that would have to be suppressed)
+
+CHOSEN NODE (minimum information loss with <= 2% suppression): PIN 6 digits, DOB = 5-year band
+  k achieved                           : 5  (target 5)
+  records suppressed                   : 6 of 5000 (0.12%)
+  records still re-identifiable        : 0  (before: 2983)
+UTILITY LOSS (aggregates the researcher could previously compute):
+  mean Amount per 6-digit PIN  -> only per-6-digit prefix available : mean abs % error = 0.00%
+  mean Amount per birth year   -> only per-5-year band available : mean abs % error = 3.54%
+  overall mean Amount           : 2421.64 -> 2420.93 (-0.03%)  [suppression effect]
+  mean Amount per Scheme (max abs change): 0.09%
+  information-loss index (0 = none, 1 = everything hidden): 0.062
+
+------------------------------------------------------------------------------
+STAGE D - ENCRYPTION AT REST (AES-256-GCM), INTEGRITY (HMAC / SHA-256) AND TAMPER DETECTION
+------------------------------------------------------------------------------
+Pipeline = read file -> (decrypt Amount) -> mean Amount per Scheme, on 100000 records, 3 runs each:
+  plaintext  : 0.150 +/- 0.002 s     file 7.5 MB
+  encrypted  : 0.594 +/- 0.016 s     file 23.1 MB   (ID_Number and Amount encrypted per field; + HMAC column)
+  overhead   : +294.8% run time, +208.2% storage ; one-off protect-and-write cost 1.21 s ; aggregate identical: True
+
+INTEGRITY BASELINE: 20,000 protected records, file SHA-256 = 1a644d39167f985ac0b5613b..., record count = 20000
+  verification of untouched data: HMAC failures=0, AES-GCM failures=0
+TAMPER EXPERIMENTS (each starts from the untouched table):
+  T1 edit a plaintext field (Scheme) of record R0001234 HMAC:FAIL  AES-GCM:ok    file-SHA256:CHANGED  count:same
+  T2 modify the ciphertext of Amount of record R0000777 HMAC:FAIL  AES-GCM:FAIL  file-SHA256:CHANGED  count:same
+  T3 swap encrypted Amounts of records R10 and R11     HMAC:FAIL  AES-GCM:FAIL  file-SHA256:CHANGED  count:same
+  T4 DELETE one whole record (R0000555)                HMAC:ok    AES-GCM:ok    file-SHA256:CHANGED  count:CHANGED
+  T5 edit audit entry #1 (rows 3 -> 0)                 hash chain: BROKEN (first bad entry seq=1)
+
+Saved results/task3_results.json and figures/fig_task3.png

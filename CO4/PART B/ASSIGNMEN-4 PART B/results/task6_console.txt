@@ -1,0 +1,54 @@
+==============================================================================
+TASK 6 - FRAUD-LINK DETECTOR (rule: >=3 distinct beneficiaries within 7 days)
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz", "cpu_cores": 1, "ram_gb": 3.9, "numpy": "2.5.4"}
+
+6.1 PART I EVENTS (8 events; NOTE: placeholders - the original eight events were not supplied)
+    ('A1', 1, 'B1')
+    ('A1', 2, 'B2')
+    ('A1', 5, 'B3')
+    ('A2', 1, 'B1')
+    ('A2', 2, 'B1')
+    ('A3', 1, 'B1')
+    ('A3', 5, 'B2')
+    ('A3', 9, 'B3')
+naive flagged: ['A1'] | keyed flagged: ['A1'] | expected: ['A1'] -> MATCH
+  FLAGGED A1 : window days 1..7  events (day, beneficiary) = [(1, 'B1'), (2, 'B2'), (5, 'B3')]  distinct beneficiaries = ['B1', 'B2', 'B3']
+
+6.2 HAND-VERIFIED 20-EVENT TEST (expected flagged derived by hand BEFORE running: X, P, S)
+  X: days 1,3,7 -> window [1..7] holds b1,b2,b3 (day 7 = d+6 is INSIDE)          -> flag
+  Y: days 1,3,8 -> [1..7]={b1,b2}, [3..9]={b2,b3}; day 8 is 7 days after day 1   -> no flag
+  Z: four payments to the same b1                                                   -> no flag (1 distinct)
+  P: days 1-4 -> b1,b2,b3 all inside one window                                      -> flag
+  Q: days 10,12,20 -> never 3 distinct inside 7 days                                 -> no flag
+  S: three different beneficiaries on the SAME day 3                                 -> flag
+naive: ['P', 'S', 'X'] | keyed: ['P', 'S', 'X'] | hand: ['P', 'S', 'X'] -> ALL AGREE
+  FLAGGED P : window days 1..7  events (day, beneficiary) = [(1, 'b1'), (2, 'b2'), (3, 'b2'), (4, 'b3')]
+  FLAGGED S : window days 3..9  events (day, beneficiary) = [(3, 'b1'), (3, 'b2'), (3, 'b3')]
+  FLAGGED X : window days 1..7  events (day, beneficiary) = [(1, 'b1'), (3, 'b2'), (7, 'b3')]
+
+6.3 SCALING (events = n, accounts = n/10, 50 beneficiaries, 365 days)
+NAIVE all-pairs (measured; agreement with keyed checked at every size):
+  n=  1000 :    0.019 +/- 0.002 s (3 runs)  flagged=12  agrees with keyed: True
+  n=  2000 :    0.095 +/- 0.029 s (3 runs)  flagged=27  agrees with keyed: True
+  n=  5000 :    0.609 +/- 0.059 s (3 runs)  flagged=49  agrees with keyed: True
+  n= 10000 :    2.241 +/- 0.000 s (1 run)  flagged=109  agrees with keyed: True
+  fitted growth: time ~ n^2.07  (quadratic expected = 2)
+KEYED sliding window (measured, one fresh process per size for clean memory):
+  n=   10000 :    0.009 +/- 0.000 s (3 runs)  peak RSS 136 MB  flagged accounts=109
+  n=  100000 :    0.094 +/- 0.002 s (3 runs)  peak RSS 136 MB  flagged accounts=1065
+  n= 1000000 :    0.997 +/- 0.063 s (3 runs)  peak RSS 136 MB  flagged accounts=11027
+  n=10000000 :   10.621 +/- 0.000 s (1 run)  peak RSS 408 MB  flagged accounts=111369
+events     naive                    keyed                    speed-up
+10000      2.24 s (measured)        0.01 s (measured)        x246
+100000     286 s = 0.0796 h (EXTRAPOLATED) 0.09 s (measured)        x3056
+1000000    3.4e+04 s = 9.44 h (EXTRAPOLATED) 1.00 s (measured)        x34083
+10000000   4.03e+06 s = 1.12e+03 h (EXTRAPOLATED) 10.62 s (measured)       x379817
+
+6.4 SKEW TEST (1,000,000 events; hot account receives 50% of all events) - keyed algorithm
+  uniform          0.958 s  flagged=11027  largest per-account window state: 6 events / 6 distinct beneficiaries  peak RSS 136 MB
+  hot account 50%  0.774 s  flagged=1543  largest per-account window state: 9851 events / 50 distinct beneficiaries  peak RSS 136 MB
+  8 hash partitions by account (uniform         ): events per partition [125702, 124303, 124718, 124945, 125000, 125593, 124732, 125007]  max/mean = 1.01
+  8 hash partitions by account (hot account 50% ): events per partition [563011, 62211, 62255, 62219, 62460, 63035, 62401, 62408]  max/mean = 4.50
+
+Saved results/task6_results.json and figures/fig_task6.png

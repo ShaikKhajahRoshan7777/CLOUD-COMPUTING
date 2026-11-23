@@ -1,0 +1,7 @@
+{
+  "kept": 187960,
+  "time_ratio": 1.583335708336896,
+  "shuffle_ratio": 1.583335708336896,
+  "reasoning": "kept = distinct valid keys, independent of duplicates; time and shuffle scale with delivered lines (200k/(1-0.40) vs 210526)",
+  "made_at": "2026-11-23 12:42:33"
+}

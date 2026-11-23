@@ -1,0 +1,65 @@
+==============================================================================
+TASK 4 - DATA QUALITY ENGINEERING
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz", "cpu_cores": 1, "ram_gb": 3.9}
+
+4.1 CLEANING STAGE on 210526 delivered lines (200,000 distinct + 5% re-sent duplicates)
+outputs: clean.csv (187960 clean rows)   quarantine.csv (22566 quarantined rows)
+
+4.2 PER-RULE SUMMARY
+rule                         decision               records   share
+R1_FIELD_COUNT               reject                    2126   1.01%
+R2_MISSING_VALUE             reject                    4250   2.02%
+R3_TYPE_REPAIR_OR_REJECT     repair/reject                4169   1.98%
+R4_RANGE                     reject                    2142   1.02%
+R5_DUPLICATE                 reject                    9879   4.69%
+KEEP (unchanged)             keep                    185973  88.34%
+REPAIR (unit suffix)         repair                    1987   0.94%
+reconciliation: kept+repaired+rejected = 210526 = lines read 210526 -> BALANCED
+
+DECISION TRACE (sample of records: which rule fired, decision, why)
+line     decision rule                       reason
+13       REJECT   R4_RANGE                   speed 260.0 outside [0,200]
+34       REJECT   R3_TYPE_REPAIR_OR_REJECT   timestamp '31/02/2026' unparsable
+38       REJECT   R3_TYPE_REPAIR_OR_REJECT   timestamp '31/02/2026' unparsable
+44       REJECT   R2_MISSING_VALUE           empty speed
+68       REJECT   R3_TYPE_REPAIR_OR_REJECT   speed 'fast' is not numeric
+70       REPAIR   R3_TYPE_REPAIR_OR_REJECT   unit suffix stripped from '55.1 km/h'
+141      REJECT   R4_RANGE                   speed 260.0 outside [0,200]
+157      REJECT   R4_RANGE                   speed 260.0 outside [0,200]
+160      REJECT   R1_FIELD_COUNT             expected 4 fields, found 3
+174      REJECT   R3_TYPE_REPAIR_OR_REJECT   timestamp '31/02/2026' unparsable
+187      REJECT   R1_FIELD_COUNT             expected 4 fields, found 3
+196      REJECT   R3_TYPE_REPAIR_OR_REJECT   timestamp '31/02/2026' unparsable
+209      REJECT   R2_MISSING_VALUE           empty speed
+216      REJECT   R3_TYPE_REPAIR_OR_REJECT   speed 'fast' is not numeric
+
+QUARANTINE FILE (first 4 rows):
+line_no|rule|reason|raw
+13|R4_RANGE|speed 260.0 outside [0,200]|S0067,SEG029,260.0,2026-03-03 08:08:27
+34|R3_TYPE_REPAIR_OR_REJECT|timestamp '31/02/2026' unparsable|S0286,SEG026,47.2,31/02/2026
+38|R3_TYPE_REPAIR_OR_REJECT|timestamp '31/02/2026' unparsable|S0194,SEG001,28.2,31/02/2026
+44|R2_MISSING_VALUE|empty speed|S0013,SEG001,,2026-03-03 22:46:31
+
+4.3 PREDICTION (recorded before the run): duplicates 5% -> 40% of delivered lines
+  records kept: unchanged (187960) ; run time x1.58 ; shuffle volume x1.58 (records AND bytes)
+OBSERVATION (3 runs each):
+                            5% duplicates 40% duplicates      ratio
+lines delivered                    210526         333333       1.58
+records kept                       187960         187960       1.00
+duplicates quarantined               9879         125244
+run time (s)                   0.766+/-0.088     1.374+/-0.074       1.79
+shuffle records to dedup           197839         313204       1.58
+shuffle volume (KB)                6332.1        10024.5       1.58
+
+4.4 SCHEMA DRIFT: source switches speed km/h -> m/s and appends a 5th field 'lane'
+pipeline variant                                   kept   rejected   mean speed
+baseline feed (km/h, 4 fields)                    46893       3107        50.06
+drifted feed, STRICT schema (R1 on)                   0      50000          n/a
+drifted feed, TOLERANT of extra fields            50000          0        13.91
+  strict mode  : R1_FIELD_COUNT fired on 50000 of 50000 lines (100%) -> drift is detected loudly, but the whole feed is quarantined
+  tolerant mode: every range rule PASSES (0-55 is inside [0,200]) -> result is silently wrong: mean 13.91 vs 50.06 km/h (x0.28)
+DRIFT MONITOR (median speed of batch vs trusted baseline): baseline 50.0, batch 13.9, ratio 0.278 -> UNIT DRIFT SUSPECTED (ratio ~ 1/3.6 = 0.278)
+HANDLING: schema registry maps source 'speed_unit=m/s' -> multiply by 3.6 : mean after conversion 50.07 km/h (baseline 50.06, diff 0.03%)
+
+Saved results/task4_results.json and figures/fig_task4.png

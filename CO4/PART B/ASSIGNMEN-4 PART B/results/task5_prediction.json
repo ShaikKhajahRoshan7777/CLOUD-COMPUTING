@@ -1,0 +1,28 @@
+{
+  "Q1p_vs_Q1_bytes": {
+    "CSV": 1.0,
+    "Parquet": 2.0,
+    "SQLite": 3.0
+  },
+  "Q2p_vs_Q2_bytes": {
+    "CSV": 1.0,
+    "Parquet": 0.6,
+    "SQLite": 1.0
+  },
+  "Q2p_vs_Q2_time": {
+    "CSV": 0.9,
+    "Parquet": 0.6,
+    "SQLite": 1.0
+  },
+  "Q1_bytes_pct_of_store": {
+    "CSV": 100,
+    "Parquet": 1.0,
+    "SQLite": 1.0
+  },
+  "Q2_bytes_pct_of_store": {
+    "CSV": 100,
+    "Parquet": 8.0,
+    "SQLite": 100
+  },
+  "made_at": "2026-11-18 14:16:14"
+}

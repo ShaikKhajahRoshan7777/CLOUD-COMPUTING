@@ -1,0 +1,97 @@
+==============================================================================
+TASK 1 - BATCH PIPELINE (map / shuffle / reduce)
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "os": "Linux-6.18.44-fc-v595-x86_64-with-glibc2.39", "cpu_cores": 1, "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz", "ram_gb": 3.9, "pandas": "3.0.6", "numpy": "2.5.4", "pyarrow": "26.0.1", "pyspark": "4.3.0", "cryptography": "50.0.2", "matplotlib": "3.11.2"}
+  data S (200k rows)       7.6 MB  traffic_200000.csv
+  data M (1M rows)        37.8 MB  traffic_1000000.csv
+  data L (4M rows)       151.3 MB  traffic_4000000.csv
+
+PREDICTIONS (saved before execution):
+  S (200k rows)  dominant=map  shuffle(with combiner)=  38141  shuffle(no combiner)=  192000  time x1
+  M (1M rows)    dominant=map  shuffle(with combiner)=  38400  shuffle(no combiner)=  960000  time x5
+  L (4M rows)    dominant=map  shuffle(with combiner)=  38400  shuffle(no combiner)= 3840000  time x20
+
+--- S (200k rows) : 7.6 MB ---
+records read=200000 accepted=192078 rejected=7922  reasons={'null_speed': 3938, 'speed_out_of_range': 1974, 'bad_timestamp': 2010}
+(segment,hour) results=4800   max |error| vs independent pandas reference = 2.84e-14
+stage time (mean of 3 runs): map=0.625s shuffle=0.049s reduce=0.016s | total 0.690 +/- 0.119 s
+shuffle: with combiner 38135 records / 1602 KB ; without combiner 192078 records / 8069 KB
+per-reducer load (raw records / partial records / keys):
+   reducer 0 :    48153 raw |   9519 partial |  1200 keys
+   reducer 1 :    47886 raw |   9544 partial |  1200 keys
+   reducer 2 :    48100 raw |   9543 partial |  1200 keys
+   reducer 3 :    47939 raw |   9529 partial |  1200 keys
+
+--- M (1M rows) : 37.8 MB ---
+records read=1000000 accepted=959749 rejected=40251  reasons={'null_speed': 20194, 'speed_out_of_range': 10055, 'bad_timestamp': 10002}
+(segment,hour) results=4800   max |error| vs independent pandas reference = 2.84e-14
+stage time (mean of 3 runs): map=3.136s shuffle=0.046s reduce=0.016s | total 3.198 +/- 0.489 s
+shuffle: with combiner 38400 records / 1613 KB ; without combiner 959749 records / 40317 KB
+per-reducer load (raw records / partial records / keys):
+   reducer 0 :   240515 raw |   9600 partial |  1200 keys
+   reducer 1 :   238909 raw |   9600 partial |  1200 keys
+   reducer 2 :   240488 raw |   9600 partial |  1200 keys
+   reducer 3 :   239837 raw |   9600 partial |  1200 keys
+
+--- L (4M rows) : 151.3 MB ---
+records read=4000000 accepted=3840098 rejected=159902  reasons={'speed_out_of_range': 39912, 'null_speed': 79690, 'bad_timestamp': 40300}
+(segment,hour) results=4800   max |error| vs independent pandas reference = 4.26e-14
+stage time (mean of 3 runs): map=11.629s shuffle=0.058s reduce=0.019s | total 11.707 +/- 0.357 s
+shuffle: with combiner 38400 records / 1613 KB ; without combiner 3840098 records / 161314 KB
+per-reducer load (raw records / partial records / keys):
+   reducer 0 :   958913 raw |   9600 partial |  1200 keys
+   reducer 1 :   962075 raw |   9600 partial |  1200 keys
+   reducer 2 :   959340 raw |   9600 partial |  1200 keys
+   reducer 3 :   959770 raw |   9600 partial |  1200 keys
+
+SAMPLE OUTPUT - average speed per segment per hour (first 6 keys sorted):
+   SEG000  02 00:00    43.79 km/h
+   SEG000  02 01:00    42.91 km/h
+   SEG000  02 02:00    41.35 km/h
+   SEG000  02 03:00    44.81 km/h
+   SEG000  02 04:00    46.47 km/h
+   SEG000  02 05:00    45.10 km/h
+
+SAMPLE (10,000 rows): single-process dict result vs map/shuffle/reduce -> keys 4122 vs 4122, max |diff| = 1.4e-14 => IDENTICAL
+
+PREDICTION vs OBSERVATION
+size           dominant  shuffle recs (pred/obs) shuffle no-comb (pred/obs) time ratio (pred/obs) 
+S (200k rows)  map          38141 / 38135           192000 / 192078         1.0 / 1.0  
+M (1M rows)    map          38400 / 38400           960000 / 959749         5.0 / 4.6  
+L (4M rows)    map          38400 / 38400          3840000 / 3840098       20.0 / 17.0 
+
+BOUNDARY / FAILURE TESTS (each checked against an independent expectation)
+  [PASS] B1 header-only (empty) file                  read=0, 4 empty reducers, no crash
+  [PASS] B2 more splits (8) than lines (3)            read=3, avg(A,10h)=55.0
+  [PASS] B3 segment with a single record              avg = the single value 37.5
+  [PASS] B4 segment with only null speeds             absent from output (no NaN); rejected=2
+  [PASS] B5 speed limits 0 and 200 inclusive          accepted=2, rejected=2, avg=100.0
+  [PASS] B6 hour boundary 23:59:59 / 00:00:00         two different hour keys: ['2026-03-02 23', '2026-03-03 00']
+  [PASS] B7 reducers (5000) > keys (4800)             R=5000 would leave empty reducers; R=16 ok, empty=0
+
+B8 SKEW CASE (chosen boundary case): 90% of 1M events on segment SEG000
+   no combiner  : reducer raw-record load = [276417, 203765, 276170, 203877] -> max/mean = 1.15
+   with combiner: reducer partial-record load = [8801, 8810, 8836, 8880] -> max/mean = 1.01
+   reduce-stage time: no combiner 0.399s vs with combiner 0.014s ; shuffle 960229 vs 35327 records
+
+APACHE SPARK 4.3.0 (local[2], shuffle partitions=4) - same job
+
+  S (200k rows): read=200000 accepted=192078 rejected=7922 | 3 run(s): 4.19 +/- 4.18 s | result check vs pandas: OK
+   stage  operation                     tasks run time s  input MB shuffle write KB shuffle read KB
+   6      csv                               1       0.01      0.07              0.0             0.0
+   7      collect                           8       1.46      8.03            632.2             0.0
+   8      collect                           4       0.13      0.00              0.0           632.2
+
+  M (1M rows): read=1000000 accepted=959749 rejected=40251 | 3 run(s): 3.29 +/- 0.32 s | result check vs pandas: OK
+   stage  operation                     tasks run time s  input MB shuffle write KB shuffle read KB
+   15     csv                               1       0.01      0.07              0.0             0.0
+   16     collect                           9       4.61     38.68            689.6             0.0
+   17     collect                           4       0.09      0.00              0.0           689.6
+
+  L (4M rows): read=4000000 accepted=3840098 rejected=159902 | 1 run(s): 9.33 +/- 0.00 s | result check vs pandas: n/a
+   stage  operation                     tasks run time s  input MB shuffle write KB shuffle read KB
+   18     csv                               1       0.00      0.07              0.0             0.0
+   19     collect                           9      17.18    151.96            745.2             0.0
+   20     collect                           4       0.08      0.00              0.0           745.2
+
+Saved results/task1_results.json and figures/fig_task1.png

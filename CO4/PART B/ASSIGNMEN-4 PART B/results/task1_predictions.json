@@ -1,0 +1,21 @@
+{
+  "S (200k rows)": {
+    "dominant_stage": "map",
+    "shuffle_records_with_combiner": 38141,
+    "shuffle_records_without_combiner": 192000,
+    "runtime_ratio_vs_S": 1.0
+  },
+  "M (1M rows)": {
+    "dominant_stage": "map",
+    "shuffle_records_with_combiner": 38400,
+    "shuffle_records_without_combiner": 960000,
+    "runtime_ratio_vs_S": 5.0
+  },
+  "L (4M rows)": {
+    "dominant_stage": "map",
+    "shuffle_records_with_combiner": 38400,
+    "shuffle_records_without_combiner": 3840000,
+    "runtime_ratio_vs_S": 20.0
+  },
+  "_made_at": "2026-11-18 08:43:44"
+}

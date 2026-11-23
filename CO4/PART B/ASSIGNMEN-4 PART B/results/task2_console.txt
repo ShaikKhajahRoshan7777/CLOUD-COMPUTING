@@ -1,0 +1,92 @@
+==============================================================================
+TASK 2 - BATCH (Solution A) vs STREAM (Solution B)
+==============================================================================
+ENVIRONMENT: {"python": "3.12.3", "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz", "cpu_cores": 1, "ram_gb": 3.9, "pyspark": "4.3.0"}
+
+2.1 NORMAL CASE - 90 ordered clean events, 3 segments x 5 one-minute windows
+window                     A: batch    B: stream  equal
+A [  0- 60 s)               54.5667      54.5667  yes
+A [ 60-120 s)               53.5167      53.5167  yes
+A [120-180 s)               63.9500      63.9500  yes
+A [180-240 s)               51.5333      51.5333  yes
+A [240-300 s)               54.0833      54.0833  yes
+B [  0- 60 s)               53.5833      53.5833  yes
+B [ 60-120 s)               45.2000      45.2000  yes
+B [120-180 s)               57.0333      57.0333  yes
+B [180-240 s)               54.2667      54.2667  yes
+B [240-300 s)               62.3833      62.3833  yes
+C [  0- 60 s)               55.8833      55.8833  yes
+C [ 60-120 s)               42.1167      42.1167  yes
+C [120-180 s)               64.3333      64.3333  yes
+C [180-240 s)               52.6667      52.6667  yes
+C [240-300 s)               57.6833      57.6833  yes
+=> identical on all 15 windows: True
+
+2.2 BREAK THE STREAM - hand-designed events (segment A):
+id    event ts   arrival  speed  note
+e1           5         6   40.0  
+e2          20        21   50.0  
+e3          35        36   60.0  
+e4          65        66   70.0  
+e2          20        67   50.0  DUPLICATE of the earlier e2
+e5          58        68   80.0  out of order by 7 s but inside the watermark
+e8         100       101   20.0  
+e6          50       102   10.0  LATE (arrives 52 s after it happened)
+e9         130       131   30.0  
+e10        190       191   90.0  
+e11        200       201   55.0  
+
+Settings under test: window=60 s, watermark=10 s, de-dup retention=30 s of event time
+window                  BatchResult StreamResult  
+A [  0- 60 s)               48.0000      56.0000  <-- DIFFERENT
+A [ 60-120 s)               45.0000      45.0000  
+A [120-180 s)               30.0000      30.0000  
+A [180-240 s)               72.5000      72.5000  
+StreamResult != BatchResult  -> True
+FIRST responsible event : e2 (arrival t=67 s, event ts=20 s) -> DUPLICATE: id already evicted from de-dup state -> counted twice
+then                    : e6 (arrival t=102 s, event ts=50 s) -> LATE: window already closed by the watermark -> event dropped
+
+FIX attempts (change one setting at a time):
+  watermark 10 s -> 60 s only                                    -> StreamResult != BatchResult
+  de-dup retention 30 s -> until window closes only              -> StreamResult != BatchResult
+  BOTH: watermark 60 s + de-dup until window closes              -> StreamResult == BatchResult
+  minimum watermark that fixes late event (41 s) + safe de-dup   -> StreamResult == BatchResult
+  watermark 40 s + safe de-dup (one second too small)            -> StreamResult != BatchResult
+
+APACHE SPARK 4.3.0 STRUCTURED STREAMING (file-source micro-batches, append mode):
+  watermark=10 s : StreamResult != BatchResult   (20.2 s)   window[0,60) Spark=57.5000  batch=48.0000
+  watermark=60 s : StreamResult == BatchResult   (9.0 s)   window[0,60) Spark=48.0000  batch=48.0000
+
+2.3 ENGINEERING COMPARISON on 204045 delivered events (200000 unique, 4045 duplicates, 5% have a 12 s-mean delay tail)
+metric                             A: batch                   B: stream (watermark 10 s)
+throughput (events/s, 3 runs)      1524123 +/- 292518         331209 +/- 45040          
+mean latency window-end -> result  5035 s (after job end)     10.74 s                   
+p95 latency                        9535 s                     10.74 s                   
+state / memory held (entries)      200000 event ids + all events 1430 (peak windows+ids)   
+windows computed                   1336                       1336                      
+result correctness vs batch        reference                  734 / 1336 windows exact (54.94%)
+error of stream avg vs batch avg   0                          mean 0.065, max 0.801 km/h
+late events dropped                0                          804 (0.394%)              
+duplicates removed                 4045                       4027                      
+
+RESTART after crash at event 102022 of 204045:
+  with checkpoint (60 KB state snapshot) : 0 windows differ from the uninterrupted run -> EXACT
+  stateless restart (state lost)       : 672 windows differ from the uninterrupted run
+  batch after crash                     : re-reads all 204045 stored events, deterministic (same 1336 windows)
+
+2.4 CHANGED REQUIREMENT: 'alerts within 2 seconds; a few late events may be ignored'
+sweep of the watermark on the same 204045 events (window = 60 s):
+watermark late drop  % dropped wrong win. mean lat (s) <=2 s results  peak state
+0 s       3346       1.640     1199       0.80         99.4           1213      
+1 s       1881       0.922     967        1.82         99.4           1247      
+2 s       1674       0.820     923        2.79         0.0            1270      
+5 s       1273       0.624     811        5.77         0.0            1330      
+10 s      804        0.394     602        10.74        0.0            1430      
+30 s      155        0.076     149        30.63        0.0            1831      
+60 s      10         0.005     10         60.77        0.0            2431      
+120 s     0          0.000     0          120.37       0.0            3639      
+
+Event-level alert path (update mode: evaluate on every arrival): 94.4% of events reach the engine within 2 s of happening
+  (the remaining 5.6% are the delayed tail - they can only be caught by a later correction/batch re-computation)
+
+Saved results/task2_results.json and figures/fig_task2.png

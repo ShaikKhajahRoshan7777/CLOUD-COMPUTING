@@ -1,0 +1,481 @@
+{
+  "env": {
+    "python": "3.12.3",
+    "os": "Linux-6.18.44-fc-v595-x86_64-with-glibc2.39",
+    "cpu_cores": 1,
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "ram_gb": 3.9,
+    "pandas": "3.0.6",
+    "numpy": "2.5.4",
+    "pyarrow": "26.0.1",
+    "pyspark": "4.3.0",
+    "cryptography": "50.0.2",
+    "matplotlib": "3.11.2"
+  },
+  "predictions": {
+    "S (200k rows)": {
+      "dominant_stage": "map",
+      "shuffle_records_with_combiner": 38141,
+      "shuffle_records_without_combiner": 192000,
+      "runtime_ratio_vs_S": 1.0
+    },
+    "M (1M rows)": {
+      "dominant_stage": "map",
+      "shuffle_records_with_combiner": 38400,
+      "shuffle_records_without_combiner": 960000,
+      "runtime_ratio_vs_S": 5.0
+    },
+    "L (4M rows)": {
+      "dominant_stage": "map",
+      "shuffle_records_with_combiner": 38400,
+      "shuffle_records_without_combiner": 3840000,
+      "runtime_ratio_vs_S": 20.0
+    },
+    "_made_at": "2026-11-18 08:43:44"
+  },
+  "observed": {
+    "S (200k rows)": {
+      "rows": 200000,
+      "mb": 7.567608,
+      "read": 200000,
+      "accepted": 192078,
+      "rejected": 7922,
+      "reasons": {
+        "null_speed": 3938,
+        "speed_out_of_range": 1974,
+        "bad_timestamp": 2010
+      },
+      "keys_out": 4800,
+      "max_abs_err_vs_pandas": 2.842170943040401e-14,
+      "total_mean": 0.6897380413334607,
+      "total_sd": 0.118835309983007,
+      "totals": [
+        0.5532130700000835,
+        0.7699391220000962,
+        0.7460619320002024
+      ],
+      "stage_mean": {
+        "map": 0.624586200000067,
+        "shuffle": 0.048949313666677575,
+        "reduce": 0.016202527666716076
+      },
+      "shuffle_records": 38135,
+      "shuffle_bytes": 1602022,
+      "shuffle_records_nocomb": 192078,
+      "shuffle_bytes_nocomb": 8068800,
+      "reducer_load": [
+        {
+          "partial_records": 9519,
+          "raw_records": 48153,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9544,
+          "raw_records": 47886,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9543,
+          "raw_records": 48100,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9529,
+          "raw_records": 47939,
+          "keys": 1200
+        }
+      ],
+      "reducer_load_nocomb": [
+        {
+          "partial_records": 48153,
+          "raw_records": 48153,
+          "keys": 1200
+        },
+        {
+          "partial_records": 47886,
+          "raw_records": 47886,
+          "keys": 1200
+        },
+        {
+          "partial_records": 48100,
+          "raw_records": 48100,
+          "keys": 1200
+        },
+        {
+          "partial_records": 47939,
+          "raw_records": 47939,
+          "keys": 1200
+        }
+      ]
+    },
+    "M (1M rows)": {
+      "rows": 1000000,
+      "mb": 37.83659,
+      "read": 1000000,
+      "accepted": 959749,
+      "rejected": 40251,
+      "reasons": {
+        "null_speed": 20194,
+        "speed_out_of_range": 10055,
+        "bad_timestamp": 10002
+      },
+      "keys_out": 4800,
+      "max_abs_err_vs_pandas": 2.842170943040401e-14,
+      "total_mean": 3.1975285860000136,
+      "total_sd": 0.48880646165362235,
+      "totals": [
+        2.8122712480001155,
+        3.7473887549999745,
+        3.032925754999951
+      ],
+      "stage_mean": {
+        "map": 3.1355448729999202,
+        "shuffle": 0.04621688033338008,
+        "reduce": 0.015766832666713526
+      },
+      "shuffle_records": 38400,
+      "shuffle_bytes": 1613152,
+      "shuffle_records_nocomb": 959749,
+      "shuffle_bytes_nocomb": 40316962,
+      "reducer_load": [
+        {
+          "partial_records": 9600,
+          "raw_records": 240515,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 238909,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 240488,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 239837,
+          "keys": 1200
+        }
+      ],
+      "reducer_load_nocomb": [
+        {
+          "partial_records": 240515,
+          "raw_records": 240515,
+          "keys": 1200
+        },
+        {
+          "partial_records": 238909,
+          "raw_records": 238909,
+          "keys": 1200
+        },
+        {
+          "partial_records": 240488,
+          "raw_records": 240488,
+          "keys": 1200
+        },
+        {
+          "partial_records": 239837,
+          "raw_records": 239837,
+          "keys": 1200
+        }
+      ]
+    },
+    "L (4M rows)": {
+      "rows": 4000000,
+      "mb": 151.347891,
+      "read": 4000000,
+      "accepted": 3840098,
+      "rejected": 159902,
+      "reasons": {
+        "speed_out_of_range": 39912,
+        "null_speed": 79690,
+        "bad_timestamp": 40300
+      },
+      "keys_out": 4800,
+      "max_abs_err_vs_pandas": 4.263256414560601e-14,
+      "total_mean": 11.70695135766664,
+      "total_sd": 0.3566908485310362,
+      "totals": [
+        11.995347131000017,
+        11.308098273000041,
+        11.81740866899986
+      ],
+      "stage_mean": {
+        "map": 11.62934666000001,
+        "shuffle": 0.05815511066657564,
+        "reduce": 0.019449587000053725
+      },
+      "shuffle_records": 38400,
+      "shuffle_bytes": 1613152,
+      "shuffle_records_nocomb": 3840098,
+      "shuffle_bytes_nocomb": 161313987,
+      "reducer_load": [
+        {
+          "partial_records": 9600,
+          "raw_records": 958913,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 962075,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 959340,
+          "keys": 1200
+        },
+        {
+          "partial_records": 9600,
+          "raw_records": 959770,
+          "keys": 1200
+        }
+      ],
+      "reducer_load_nocomb": [
+        {
+          "partial_records": 958913,
+          "raw_records": 958913,
+          "keys": 1200
+        },
+        {
+          "partial_records": 962075,
+          "raw_records": 962075,
+          "keys": 1200
+        },
+        {
+          "partial_records": 959340,
+          "raw_records": 959340,
+          "keys": 1200
+        },
+        {
+          "partial_records": 959770,
+          "raw_records": 959770,
+          "keys": 1200
+        }
+      ]
+    }
+  },
+  "compare": [
+    {
+      "size": "S (200k rows)",
+      "dominant_pred": "map",
+      "dominant_obs": "map",
+      "shuffle_pred": 38141,
+      "shuffle_obs": 38135,
+      "nocomb_pred": 192000,
+      "nocomb_obs": 192078,
+      "ratio_pred": 1.0,
+      "ratio_obs": 1.0
+    },
+    {
+      "size": "M (1M rows)",
+      "dominant_pred": "map",
+      "dominant_obs": "map",
+      "shuffle_pred": 38400,
+      "shuffle_obs": 38400,
+      "nocomb_pred": 960000,
+      "nocomb_obs": 959749,
+      "ratio_pred": 5.0,
+      "ratio_obs": 4.6358594051420985
+    },
+    {
+      "size": "L (4M rows)",
+      "dominant_pred": "map",
+      "dominant_obs": "map",
+      "shuffle_pred": 38400,
+      "shuffle_obs": 38400,
+      "nocomb_pred": 3840000,
+      "nocomb_obs": 3840098,
+      "ratio_pred": 20.0,
+      "ratio_obs": 16.97303998925992
+    }
+  ],
+  "boundary": [
+    {
+      "case": "B1 header-only (empty) file",
+      "pass": true,
+      "detail": "read=0, 4 empty reducers, no crash"
+    },
+    {
+      "case": "B2 more splits (8) than lines (3)",
+      "pass": true,
+      "detail": "read=3, avg(A,10h)=55.0"
+    },
+    {
+      "case": "B3 segment with a single record",
+      "pass": true,
+      "detail": "avg = the single value 37.5"
+    },
+    {
+      "case": "B4 segment with only null speeds",
+      "pass": true,
+      "detail": "absent from output (no NaN); rejected=2"
+    },
+    {
+      "case": "B5 speed limits 0 and 200 inclusive",
+      "pass": true,
+      "detail": "accepted=2, rejected=2, avg=100.0"
+    },
+    {
+      "case": "B6 hour boundary 23:59:59 / 00:00:00",
+      "pass": true,
+      "detail": "two different hour keys: ['2026-03-02 23', '2026-03-03 00']"
+    },
+    {
+      "case": "B7 reducers (5000) > keys (4800)",
+      "pass": true,
+      "detail": "R=5000 would leave empty reducers; R=16 ok, empty=0"
+    }
+  ],
+  "skew": {
+    "loads_nocomb": [
+      276417,
+      203765,
+      276170,
+      203877
+    ],
+    "loads_comb": [
+      8801,
+      8810,
+      8836,
+      8880
+    ],
+    "imbalance_nocomb": 1.1514628281378714,
+    "reduce_s_nocomb": 0.39884307000011177,
+    "reduce_s_comb": 0.014014574000157154,
+    "shuffle_nocomb": 960229,
+    "shuffle_comb": 35327
+  },
+  "spark": {
+    "S (200k rows)": {
+      "times": [
+        9.01162903799991,
+        1.9765085449998878,
+        1.5678652530000363
+      ],
+      "mean": 4.185334278666612,
+      "sd": 4.18468495385258,
+      "reps": 3,
+      "read": 200000,
+      "accepted": 192078,
+      "rejected": 7922,
+      "stages": [
+        {
+          "stage_id": 6,
+          "name": "csv",
+          "tasks": 1,
+          "run_time_s": 0.01,
+          "input_mb": 0.07,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 7,
+          "name": "collect",
+          "tasks": 8,
+          "run_time_s": 1.46,
+          "input_mb": 8.03,
+          "shuffle_write_kb": 632.2,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 8,
+          "name": "collect",
+          "tasks": 4,
+          "run_time_s": 0.13,
+          "input_mb": 0.0,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 632.2
+        }
+      ],
+      "matches_pandas": "OK"
+    },
+    "M (1M rows)": {
+      "times": [
+        3.654011010999966,
+        3.1358706280000206,
+        3.0789305410000907
+      ],
+      "mean": 3.2896040600000256,
+      "sd": 0.31686726373940005,
+      "reps": 3,
+      "read": 1000000,
+      "accepted": 959749,
+      "rejected": 40251,
+      "stages": [
+        {
+          "stage_id": 15,
+          "name": "csv",
+          "tasks": 1,
+          "run_time_s": 0.01,
+          "input_mb": 0.07,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 16,
+          "name": "collect",
+          "tasks": 9,
+          "run_time_s": 4.61,
+          "input_mb": 38.68,
+          "shuffle_write_kb": 689.6,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 17,
+          "name": "collect",
+          "tasks": 4,
+          "run_time_s": 0.09,
+          "input_mb": 0.0,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 689.6
+        }
+      ],
+      "matches_pandas": "OK"
+    },
+    "L (4M rows)": {
+      "times": [
+        9.33264117800013
+      ],
+      "mean": 9.33264117800013,
+      "sd": 0.0,
+      "reps": 1,
+      "read": 4000000,
+      "accepted": 3840098,
+      "rejected": 159902,
+      "stages": [
+        {
+          "stage_id": 18,
+          "name": "csv",
+          "tasks": 1,
+          "run_time_s": 0.0,
+          "input_mb": 0.07,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 19,
+          "name": "collect",
+          "tasks": 9,
+          "run_time_s": 17.18,
+          "input_mb": 151.96,
+          "shuffle_write_kb": 745.2,
+          "shuffle_read_kb": 0.0
+        },
+        {
+          "stage_id": 20,
+          "name": "collect",
+          "tasks": 4,
+          "run_time_s": 0.08,
+          "input_mb": 0.0,
+          "shuffle_write_kb": 0.0,
+          "shuffle_read_kb": 745.2
+        }
+      ],
+      "matches_pandas": "n/a"
+    }
+  },
+  "sample_diff": 1.4210854715202004e-14
+}
