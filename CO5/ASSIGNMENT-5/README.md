@@ -1,8 +1,6 @@
 # CSA15 - Cloud Computing and Big Data Analytics | Assignment 5 (CO5)
 ## Hadoop and MapReduce Architecture Engineering - Metro Transit Footfall Analysis
 
-Everything needed to reproduce Part B of the assignment: source code, configuration, test inputs,
-scripts, experiment results, figures and VS Code output screenshots.
 
 ```
 CO5_Hadoop_Assignment/
@@ -40,10 +38,4 @@ Hadoop Streaming (real cluster): `bash scripts/02_run_streaming_job.sh`
 (mapper.py / reducer.py read stdin and write stdout, so they run unchanged under Hadoop Streaming;
  locally: `cat data/sample.csv | python src/mapper.py | sort | python src/reducer.py`).
 
-## Honest scope statement
-* `src/mr_local.py` is a **local emulator** of the MapReduce data path (splits, map-side sort,
-  combiner, hash partitioner, shuffle, reduce, counters). Times are wall-clock seconds of one
-  Python process - valid for relative comparison only.
-* `scheduler_sim.py` is a **model** of FIFO vs Capacity scheduling, not YARN itself.
-* NameNode / ResourceManager web-UI captures, `hdfs fsck` output and real job-history logs must be
-  captured on a real Hadoop installation (see `scripts/01_hdfs_operations.sh`).
+
