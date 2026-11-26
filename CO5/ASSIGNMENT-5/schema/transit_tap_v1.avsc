@@ -1,0 +1,11 @@
+{
+  "type": "record", "name": "TransitTap", "namespace": "in.simats.transit",
+  "fields": [
+    {"name": "timestamp", "type": "string"},
+    {"name": "station_id", "type": "string"},
+    {"name": "gate_id",    "type": "string"},
+    {"name": "card_id",    "type": "string"},
+    {"name": "tap_type",   "type": {"type": "enum", "name": "TapType", "symbols": ["ENTRY", "EXIT"]}},
+    {"name": "fare",       "type": "double"}
+  ]
+}

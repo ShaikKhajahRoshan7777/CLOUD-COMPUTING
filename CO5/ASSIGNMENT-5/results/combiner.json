@@ -1,0 +1,31 @@
+{
+ "without": {
+  "Launched map tasks": 6,
+  "Launched reduce tasks": 2,
+  "Map input records": 419431,
+  "Transit.ExitTapsSkipped": 209536,
+  "Map output records": 209895,
+  "Reduce shuffle bytes": 4407795,
+  "Reduce input records": 209895,
+  "Reduce input groups": 8603,
+  "Reduce output records": 8603,
+  "elapsed": 1.002168893814087
+ },
+ "with": {
+  "Launched map tasks": 6,
+  "Launched reduce tasks": 2,
+  "Map input records": 419431,
+  "Transit.ExitTapsSkipped": 209536,
+  "Map output records": 209895,
+  "Combine input records": 209895,
+  "Combine output records": 37678,
+  "Reduce shuffle bytes": 797481,
+  "Reduce input records": 37678,
+  "Reduce input groups": 8603,
+  "Reduce output records": 8603,
+  "elapsed": 0.8335793018341064
+ },
+ "reduction_pct": 81.90748435442211,
+ "identical": true,
+ "records": 419431
+}

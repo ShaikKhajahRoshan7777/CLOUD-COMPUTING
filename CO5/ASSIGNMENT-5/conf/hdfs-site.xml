@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<configuration>
+  <property><name>dfs.replication</name><value>1</value></property>          <!-- 1 on a single node; design value is 3 -->
+  <property><name>dfs.blocksize</name><value>134217728</value></property>     <!-- 128 MB -->
+  <property><name>dfs.namenode.name.dir</name><value>file:///home/hadoop/hadoopdata/nn</value></property>
+  <property><name>dfs.datanode.data.dir</name><value>file:///home/hadoop/hadoopdata/dn</value></property>
+</configuration>

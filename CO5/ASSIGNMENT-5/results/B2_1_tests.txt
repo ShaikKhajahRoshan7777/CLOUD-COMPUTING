@@ -1,0 +1,24 @@
+TEST 1 - hand-checkable sample (10 records, 2 splits => 2 map tasks)
+    S001|2026-03-02|08	2
+    S001|2026-03-02|09	2
+    S002|2026-03-02|08	2
+    S003|2026-03-02|09	2
+[PASS] hand-computed answer 
+[PASS] independent oracle 
+    counters: {'Map input records': 10, 'Transit.ExitTapsSkipped': 2, 'Map output records': 8}
+
+TEST 2 - malformed records are skipped AND counted
+[PASS] valid records still aggregated 
+[PASS] MalformedRecords counter == 3 
+
+TEST 3a - boundary: empty file
+[PASS] empty input -> empty output, no crash 
+
+TEST 3b - boundary: only EXIT taps
+[PASS] EXIT-only input -> empty output 
+[PASS] ExitTapsSkipped counter == 2 
+
+TEST 4 - split-boundary integrity (many tiny splits must equal 1 split)
+[PASS] 37-byte splits == single split 
+
+OVERALL: ALL TESTS PASSED

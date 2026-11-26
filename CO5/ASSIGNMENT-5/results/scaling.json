@@ -1,0 +1,110 @@
+[
+ {
+  "size_mb": 10,
+  "records": 209716,
+  "splits": 1,
+  "maps": 1,
+  "reducers": 1,
+  "shuffle": 180103,
+  "time": 0.40816164016723633
+ },
+ {
+  "size_mb": 10,
+  "records": 209716,
+  "splits": 1,
+  "maps": 1,
+  "reducers": 2,
+  "shuffle": 180103,
+  "time": 0.4143543243408203
+ },
+ {
+  "size_mb": 10,
+  "records": 209716,
+  "splits": 1,
+  "maps": 1,
+  "reducers": 4,
+  "shuffle": 180103,
+  "time": 0.42606687545776367
+ },
+ {
+  "size_mb": 25,
+  "records": 524288,
+  "splits": 2,
+  "maps": 2,
+  "reducers": 1,
+  "shuffle": 363290,
+  "time": 1.0813241004943848
+ },
+ {
+  "size_mb": 25,
+  "records": 524288,
+  "splits": 2,
+  "maps": 2,
+  "reducers": 2,
+  "shuffle": 363290,
+  "time": 1.0460283756256104
+ },
+ {
+  "size_mb": 25,
+  "records": 524288,
+  "splits": 2,
+  "maps": 2,
+  "reducers": 4,
+  "shuffle": 363290,
+  "time": 1.0929622650146484
+ },
+ {
+  "size_mb": 50,
+  "records": 1048576,
+  "splits": 4,
+  "maps": 4,
+  "reducers": 1,
+  "shuffle": 693788,
+  "time": 2.0893664360046387
+ },
+ {
+  "size_mb": 50,
+  "records": 1048576,
+  "splits": 4,
+  "maps": 4,
+  "reducers": 2,
+  "shuffle": 693788,
+  "time": 2.112398862838745
+ },
+ {
+  "size_mb": 50,
+  "records": 1048576,
+  "splits": 4,
+  "maps": 4,
+  "reducers": 4,
+  "shuffle": 693788,
+  "time": 2.1765172481536865
+ },
+ {
+  "size_mb": 100,
+  "records": 2097152,
+  "splits": 7,
+  "maps": 7,
+  "reducers": 1,
+  "shuffle": 1270462,
+  "time": 4.24418568611145
+ },
+ {
+  "size_mb": 100,
+  "records": 2097152,
+  "splits": 7,
+  "maps": 7,
+  "reducers": 2,
+  "shuffle": 1270462,
+  "time": 4.2739903926849365
+ },
+ {
+  "size_mb": 100,
+  "records": 2097152,
+  "splits": 7,
+  "maps": 7,
+  "reducers": 4,
+  "shuffle": 1270462,
+  "time": 4.3354692459106445
+ }
+]

@@ -1,0 +1,27 @@
+{
+ "job1": {
+  "Launched map tasks": 6,
+  "Launched reduce tasks": 4,
+  "Map input records": 60000,
+  "Map output records": 29909,
+  "Combine input records": 29909,
+  "Combine output records": 2160,
+  "Reduce shuffle bytes": 40751,
+  "Reduce input records": 2160,
+  "Reduce input groups": 360,
+  "Reduce output records": 360
+ },
+ "job2": {
+  "Launched map tasks": 4,
+  "Launched reduce tasks": 1,
+  "Map input records": 360,
+  "Map output records": 360,
+  "Combine input records": 360,
+  "Combine output records": 60,
+  "Reduce shuffle bytes": 1152,
+  "Reduce input records": 60,
+  "Reduce input groups": 3,
+  "Reduce output records": 15
+ },
+ "match": true
+}

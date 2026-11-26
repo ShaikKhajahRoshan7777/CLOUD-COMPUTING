@@ -1,0 +1,37 @@
+PREDICTION (made before running):
+  hot station S001, 70% of records. Reducer owning key 'S001' (station-level key): reducer 1
+  Under the hour-level Q1 key (S001|date|HH) the hot station's 24 keys hash to reducers: [0, 1, 2, 3]
+  => skew visible with station-level key; Q1 hour-level key spreads the hot station over reducers.
+
+uniform / station key: total reduce input 315,073 records
+   reducer  input_records  share   reduce_time(s)
+         0         78,869   25.0%       0.030
+         1         78,810   25.0%       0.026
+         2         81,383   25.8%       0.027
+         3         76,011   24.1%       0.025
+   -> heaviest reducer: 2
+
+skewed  / station key: total reduce input 314,966 records
+   reducer  input_records  share   reduce_time(s)
+         0         23,704    7.5%       0.009
+         1        244,088   77.5%       0.066
+         2         24,499    7.8%       0.008
+         3         22,675    7.2%       0.008
+   -> heaviest reducer: 1
+
+skewed  / Q1 hour key: total reduce input 314,966 records
+   reducer  input_records  share   reduce_time(s)
+         0         69,233   22.0%       0.029
+         1         67,545   21.4%       0.025
+         2         87,695   27.8%       0.030
+         3         90,493   28.7%       0.031
+   -> heaviest reducer: 3
+
+skewed  / salted key: total reduce input 314,966 records
+   reducer  input_records  share   reduce_time(s)
+         0         78,862   25.0%       0.033
+         1         78,495   24.9%       0.029
+         2         78,831   25.0%       0.028
+         3         78,778   25.0%       0.027
+   -> heaviest reducer: 0
+

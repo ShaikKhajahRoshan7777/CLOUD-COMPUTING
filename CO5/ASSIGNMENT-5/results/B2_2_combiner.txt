@@ -1,0 +1,13 @@
+input: 419,431 records, 20.0 MB, split size 4 MB (scaled from 128 MB)
+
+Counter                      Without Combiner    With Combiner
+Map input records                     419,431          419,431
+Map output records                    209,895          209,895
+Combine input records                       0          209,895
+Combine output records                      0           37,678
+Reduce shuffle bytes                4,407,795          797,481
+Reduce input records                  209,895           37,678
+Reduce input groups                     8,603            8,603
+Elapsed time (s)                         1.00             0.83
+
+Shuffle volume reduced by 81.9%.  Final output identical: True

@@ -1,0 +1,106 @@
+{
+ "uniform / station key": [
+  {
+   "reducer": 0,
+   "input_records": 78869,
+   "input_groups": 30,
+   "seconds": 0.030119657516479492
+  },
+  {
+   "reducer": 1,
+   "input_records": 78810,
+   "input_groups": 30,
+   "seconds": 0.025738954544067383
+  },
+  {
+   "reducer": 2,
+   "input_records": 81383,
+   "input_groups": 31,
+   "seconds": 0.027106761932373047
+  },
+  {
+   "reducer": 3,
+   "input_records": 76011,
+   "input_groups": 29,
+   "seconds": 0.02538275718688965
+  }
+ ],
+ "skewed  / station key": [
+  {
+   "reducer": 0,
+   "input_records": 23704,
+   "input_groups": 30,
+   "seconds": 0.009228229522705078
+  },
+  {
+   "reducer": 1,
+   "input_records": 244088,
+   "input_groups": 30,
+   "seconds": 0.06632733345031738
+  },
+  {
+   "reducer": 2,
+   "input_records": 24499,
+   "input_groups": 31,
+   "seconds": 0.008120059967041016
+  },
+  {
+   "reducer": 3,
+   "input_records": 22675,
+   "input_groups": 29,
+   "seconds": 0.007537364959716797
+  }
+ ],
+ "skewed  / Q1 hour key": [
+  {
+   "reducer": 0,
+   "input_records": 69233,
+   "input_groups": 718,
+   "seconds": 0.02875041961669922
+  },
+  {
+   "reducer": 1,
+   "input_records": 67545,
+   "input_groups": 719,
+   "seconds": 0.024979352951049805
+  },
+  {
+   "reducer": 2,
+   "input_records": 87695,
+   "input_groups": 720,
+   "seconds": 0.03024578094482422
+  },
+  {
+   "reducer": 3,
+   "input_records": 90493,
+   "input_groups": 720,
+   "seconds": 0.03111410140991211
+  }
+ ],
+ "skewed  / salted key": [
+  {
+   "reducer": 0,
+   "input_records": 78862,
+   "input_groups": 480,
+   "seconds": 0.03265810012817383
+  },
+  {
+   "reducer": 1,
+   "input_records": 78495,
+   "input_groups": 480,
+   "seconds": 0.02899312973022461
+  },
+  {
+   "reducer": 2,
+   "input_records": 78831,
+   "input_groups": 480,
+   "seconds": 0.02805614471435547
+  },
+  {
+   "reducer": 3,
+   "input_records": 78778,
+   "input_groups": 480,
+   "seconds": 0.027149677276611328
+  }
+ ]
+}

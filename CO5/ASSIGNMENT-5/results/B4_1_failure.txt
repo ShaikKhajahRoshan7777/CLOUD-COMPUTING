@@ -1,0 +1,21 @@
+
+===== SCENARIO: TRANSIENT failure | mapreduce.map.maxattempts=4 =====
+job_0001 submitted: 4 map tasks, 1 reduce task
+  attempt_0001_m_000000_0 on node1: SUCCEEDED
+  attempt_0001_m_000001_0 on node2: SUCCEEDED
+  attempt_0001_m_000002_0 on node3: FAILED  (Mapper crashed on record: ...C666666666...)
+  attempt_0001_m_000002_1 on node1: FAILED  (Mapper crashed on record: ...C666666666...)
+  attempt_0001_m_000002_2 on node2: SUCCEEDED
+  attempt_0001_m_000003_0 on node1: SUCCEEDED
+job_0001 state: SUCCEEDED ; reduce output rows = 1033 ; failed attempts counted = 2
+
+===== SCENARIO: PERMANENT failure | mapreduce.map.maxattempts=4 =====
+job_0001 submitted: 4 map tasks, 1 reduce task
+  attempt_0001_m_000000_0 on node1: SUCCEEDED
+  attempt_0001_m_000001_0 on node2: SUCCEEDED
+  attempt_0001_m_000002_0 on node3: FAILED  (Mapper crashed on record: ...C666666666...)
+  attempt_0001_m_000002_1 on node1: FAILED  (Mapper crashed on record: ...C666666666...)
+  attempt_0001_m_000002_2 on node2: FAILED  (Mapper crashed on record: ...C666666666...)
+  attempt_0001_m_000002_3 on node3: FAILED  (Mapper crashed on record: ...C666666666...)
+  task m_000002 exhausted 4 attempts -> TASK FAILED
+job_0001 state: FAILED  (remaining tasks KILLED, no output committed, _SUCCESS marker absent)

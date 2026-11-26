@@ -1,0 +1,22 @@
+input: 60,000 records, 3 days, 120 stations
+Job 1: 6 maps, 29,909 map-out -> 2,160 shuffled after combiner -> 360 (station,day) rows
+Job 2: 4 maps, 360 map-out -> 60 after top-5 combiner -> 15 output rows
+
+Top-5 busiest stations per day (MapReduce output):
+   2026-03-02	S038|110
+   2026-03-02	S050|104
+   2026-03-02	S062|102
+   2026-03-02	S017|101
+   2026-03-02	S053|101
+   2026-03-03	S100|109
+   2026-03-03	S070|104
+   2026-03-03	S010|98
+   2026-03-03	S055|98
+   2026-03-03	S030|96
+   2026-03-04	S104|117
+   2026-03-04	S078|104
+   2026-03-04	S114|102
+   2026-03-04	S071|100
+   2026-03-04	S030|99
+
+VERIFICATION against independent script: MATCH

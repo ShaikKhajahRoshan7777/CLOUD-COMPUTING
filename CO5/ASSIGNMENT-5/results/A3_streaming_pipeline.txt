@@ -1,0 +1,6 @@
+S001|2026-03-02|08	2
+S001|2026-03-02|09	2
+S002|2026-03-02|08	2
+S003|2026-03-02|09	2
+reporter:counter:Transit,ExitTapsSkipped,1
+reporter:counter:Transit,ExitTapsSkipped,1

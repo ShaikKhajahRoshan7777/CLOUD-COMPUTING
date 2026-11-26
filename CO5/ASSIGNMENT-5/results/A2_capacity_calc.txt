@@ -1,0 +1,14 @@
+A2.1 CAPACITY PLANNING
+1) blocks/day      = 2 TB / 128 MB = 2,097,152 MB / 128 = 16,384
+2) raw storage/day = 2 TB x 3 = 6 TB ; 90 days = 6 x 90 = 540 TB
+3) usable per DN   = 24 TB x (1-0.25) = 18 TB ; DataNodes = 540/18 = 30.0 -> 30
+4) block objects 90d = 16,384 x 90 = 1,474,560 ; NameNode heap = 1,474,560 x 150 B = 221,184,000 B = 210.9 MiB
+
+TINY-FILE EFFECT (same 2 TB/day stored as 1 MB files)
+files/day = 2,097,152 ; 90 days = 188,743,680
+objects   = 188,743,680 files + 188,743,680 blocks = 377,487,360
+NameNode heap = 377,487,360 x 150 B = 52.7 GiB  (vs 210.9 MiB with 128 MB blocks = 256x more)
+
+B1.2 CROSS-CHECK: a 1 GB test log file
+blocks = ceil(1024 MB / 128 MB) = 8 ; replicas stored = 24
+a 300 MB file -> blocks = ceil(300/128) = 3 (128 + 128 + 44 MB); last block only occupies 44 MB on disk
